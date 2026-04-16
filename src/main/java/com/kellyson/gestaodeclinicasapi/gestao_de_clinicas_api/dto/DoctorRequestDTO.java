@@ -8,7 +8,7 @@ public record DoctorRequestDTO(
         @Size(min = 3,max = 100,message = "O nome deve ter entre 3 a 100 caracteres")
         String name,
         @NotBlank
-        @Size(min = 8,max = 100,message = "Especialidades devem ter entre 8 a 100 caracteres")
+        @Size(min = 8,max = 22,message = "Especialidade deve ter entre 8 a 22 caracteres")
         String specialty
 ) {
 }
