@@ -3,6 +3,7 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.DoctorRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.DoctorResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.DoctorSpecialty;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.DoctorMapper;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,8 @@ public class DoctorService {
         return DoctorMapper.mapToResponse(doctor);
     }
 
-    public List<DoctorResponseDTO> findBySpecialty (String specialty) {
-        return doctorRepository.findBySpecialtyIgnoreCase(specialty)
+    public List<DoctorResponseDTO> findBySpecialty (DoctorSpecialty specialty) {
+        return doctorRepository.findBySpecialty(specialty)
                 .stream()
                 .map(doctor -> DoctorMapper.mapToResponse(doctor))
                 .toList();
