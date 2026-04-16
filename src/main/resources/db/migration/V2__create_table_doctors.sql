@@ -1,0 +1,5 @@
+CREATE TABLE doctors (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    specialty VARCHAR(100) NOT NULL
+);
