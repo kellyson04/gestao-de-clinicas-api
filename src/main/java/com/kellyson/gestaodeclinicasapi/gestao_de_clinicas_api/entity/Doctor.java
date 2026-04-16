@@ -1,5 +1,6 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity;
 
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.DoctorSpecialty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,5 +21,6 @@ public class Doctor {
     private String name;
 
     @Column(nullable = false,length = 100)
-    private String specialty;
+    @Enumerated(EnumType.STRING)
+    private DoctorSpecialty specialty;
 }
