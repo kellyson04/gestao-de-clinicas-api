@@ -7,6 +7,8 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.DoctorMapp
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DoctorService {
     private final DoctorRepository doctorRepository;
@@ -19,5 +21,12 @@ public class DoctorService {
         Doctor doctor = doctorRepository.save(DoctorMapper.mapToEntity(doctorRequestDTO));
 
         return DoctorMapper.mapToResponse(doctor);
+    }
+
+    public List<DoctorResponseDTO> findBySpecialty (String specialty) {
+        return doctorRepository.findBySpecialtyIgnoreCase(specialty)
+                .stream()
+                .map(doctor -> DoctorMapper.mapToResponse(doctor))
+                .toList();
     }
 }
