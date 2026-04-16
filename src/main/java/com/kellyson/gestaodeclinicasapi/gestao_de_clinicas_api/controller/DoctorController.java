@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/clinica/doctors")
 public class DoctorController {
@@ -23,4 +25,9 @@ public class DoctorController {
         return doctorService.createDoctor(doctorRequestDTO);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    public List<DoctorResponseDTO> listBySpecialty (@RequestParam String specialty) {
+        return doctorService.findBySpecialty(specialty);
+    }
 }
