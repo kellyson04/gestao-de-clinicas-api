@@ -7,6 +7,8 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.PatientMap
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PatientRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PatientService {
 
@@ -20,5 +22,12 @@ public class PatientService {
         Patient savePatient = patientRepository.save(PatientMapper.mapToEntity(patientRequestDTO));
 
         return PatientMapper.mapToResponse(savePatient);
+    }
+
+    public List<PatientResponseDTO> listPatients () {
+        return patientRepository.findAll()
+                .stream()
+                .map(patient -> PatientMapper.mapToResponse(patient))
+                .toList();
     }
 }
