@@ -31,4 +31,9 @@ public class PatientController {
         return patientService.listPatients();
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{cpf}")
+    public PatientResponseDTO findByCpf (@PathVariable String cpf) {
+        return patientService.findByCpf(cpf);
+    }
 }
