@@ -30,4 +30,10 @@ public class PatientService {
                 .map(patient -> PatientMapper.mapToResponse(patient))
                 .toList();
     }
+
+    public PatientResponseDTO findByCpf (String cpf) {
+        Patient patientByCpf = patientRepository.findByCpf(cpf).orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
+
+        return PatientMapper.mapToResponse(patientByCpf);
+    }
 }
