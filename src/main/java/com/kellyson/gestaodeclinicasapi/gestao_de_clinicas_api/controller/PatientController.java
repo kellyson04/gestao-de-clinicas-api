@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/clinica/patients")
 public class PatientController {
@@ -21,6 +23,12 @@ public class PatientController {
     @PostMapping
     public PatientResponseDTO createPatient (@Valid @RequestBody PatientRequestDTO patientRequestDTO) {
         return patientService.createPatient(patientRequestDTO);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    public List<PatientResponseDTO> listPatients () {
+        return patientService.listPatients();
     }
 
 }
