@@ -5,6 +5,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.DoctorRespons
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.DoctorService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,15 +20,13 @@ public class DoctorController {
         this.doctorService = doctorService;
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public DoctorResponseDTO createDoctor (@Valid @RequestBody DoctorRequestDTO doctorRequestDTO) {
-        return doctorService.createDoctor(doctorRequestDTO);
+    public ResponseEntity<DoctorResponseDTO> createDoctor (@Valid @RequestBody DoctorRequestDTO doctorRequestDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(doctorService.createDoctor(doctorRequestDTO));
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<DoctorResponseDTO> listBySpecialty (@RequestParam String specialty) {
-        return doctorService.findBySpecialty(specialty);
+    public ResponseEntity<List<DoctorResponseDTO>> listBySpecialty (@RequestParam String specialty) {
+        return ResponseEntity.ok(doctorService.findBySpecialty(specialty));
     }
 }

@@ -5,6 +5,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.PatientRespon
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.PatientService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,21 +20,20 @@ public class PatientController {
         this.patientService = patientService;
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+
     @PostMapping
-    public PatientResponseDTO createPatient (@Valid @RequestBody PatientRequestDTO patientRequestDTO) {
-        return patientService.createPatient(patientRequestDTO);
+    public ResponseEntity<PatientResponseDTO> createPatient (@Valid @RequestBody PatientRequestDTO patientRequestDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(patientService.createPatient(patientRequestDTO));
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<PatientResponseDTO> listPatients () {
-        return patientService.listPatients();
+    public ResponseEntity<List<PatientResponseDTO>> listPatients () {
+        return ResponseEntity.ok(patientService.listPatients());
     }
 
-    @ResponseStatus(HttpStatus.OK)
+
     @GetMapping("/{cpf}")
-    public PatientResponseDTO findByCpf (@PathVariable String cpf) {
-        return patientService.findByCpf(cpf);
+    public ResponseEntity<PatientResponseDTO> findByCpf (@PathVariable String cpf) {
+        return ResponseEntity.ok(patientService.findByCpf(cpf));
     }
 }
