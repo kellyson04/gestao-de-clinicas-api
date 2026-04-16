@@ -1,4 +1,10 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto;
 
-public record DoctorResponseDTO() {
+import lombok.Builder;
+
+@Builder
+public record DoctorResponseDTO(
+        String name,
+        String specialty
+) {
 }
