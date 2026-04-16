@@ -32,7 +32,7 @@ public class AppointmentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AppointmentResponseDTO>> listAppoinmentsByPeriod (@RequestParam LocalDateTime firstDate, @RequestParam LocalDateTime lastDate) {
+    public ResponseEntity<List<AppointmentResponseDTO>> listAppointmentsByPeriod(@RequestParam LocalDateTime firstDate, @RequestParam LocalDateTime lastDate) {
         return ResponseEntity.status(HttpStatus.OK).body(appointmentService.listAppointmentsByPeriod(firstDate,lastDate));
     }
 
