@@ -6,6 +6,10 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Appointmen
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Patient;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.AppointmentStatus;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.AppointmentNotFoundException;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.ConflictException;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.DoctorNotFoundException;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.PatientNotFoundException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.AppointmentMapper;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.AppointmentRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
@@ -29,8 +33,8 @@ public class AppointmentService {
     }
 
     public AppointmentResponseDTO scheduleAppointment (AppointmentRequestDTO appointmentRequestDTO) {
-        Patient patient = patientRepository.findById(appointmentRequestDTO.patientId()).orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
-        Doctor doctor = doctorRepository.findById(appointmentRequestDTO.doctorId()).orElseThrow(() -> new RuntimeException("Médico não encontrado"));
+        Patient patient = patientRepository.findById(appointmentRequestDTO.patientId()).orElseThrow(() -> new PatientNotFoundException("Paciente não encontrado"));
+        Doctor doctor = doctorRepository.findById(appointmentRequestDTO.doctorId()).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado"));
 
         Appointment appointment = Appointment.builder()
                 .patient(patient)
@@ -45,13 +49,13 @@ public class AppointmentService {
     }
 
     public AppointmentResponseDTO cancelAppointment (Long id) {
-        Appointment appointment = appointmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Essa consulta não existe"));
+        Appointment appointment = appointmentRepository.findById(id).orElseThrow(() -> new AppointmentNotFoundException("Essa consulta não existe"));
 
         if (appointment.getStatus().equals(AppointmentStatus.CANCELED)) {
-            throw new RuntimeException("Consulta ja cancelada");
+            throw new ConflictException("Consulta ja cancelada");
         }
         if (appointment.getStatus().equals(AppointmentStatus.DONE)) {
-            throw new RuntimeException("Consulta ja realizada");
+            throw new ConflictException("Consulta ja realizada");
         }
 
         appointment.setStatus(AppointmentStatus.CANCELED);
@@ -75,7 +79,7 @@ public class AppointmentService {
     }
 
     public List<AppointmentResponseDTO> listPatientAppointments (Long patientId) {
-        Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
+        Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException("Paciente não encontrado"));
 
         List<Appointment> appointments = appointmentRepository.findByPatientAndStatus(patient,AppointmentStatus.SCHEDULED);
 
