@@ -3,6 +3,7 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.PatientRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.PatientResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Patient;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.PatientNotFoundException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.PatientMapper;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PatientRepository;
 import org.springframework.stereotype.Service;
@@ -31,8 +32,8 @@ public class PatientService {
                 .toList();
     }
 
-    public PatientResponseDTO findByCpf (String cpf) {
-        Patient patientByCpf = patientRepository.findByCpf(cpf).orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
+    public PatientResponseDTO findByCpf (String cpf) throws RuntimeException {
+        Patient patientByCpf = patientRepository.findByCpf(cpf).orElseThrow(() -> new PatientNotFoundException("Paciente não encontrado"));
 
         return PatientMapper.mapToResponse(patientByCpf);
     }
