@@ -7,8 +7,7 @@ import lombok.Builder;
 import java.math.BigDecimal;
 
 @Builder
-public record PaymentResponse(
-        Long paymentId,
+public record PaymentResponseDTO(
         Appointment appointment,
         BigDecimal amount,
         PaymentStatus status
