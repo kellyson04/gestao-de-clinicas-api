@@ -43,10 +43,11 @@ public class PaymentService {
                 .status(PaymentStatus.PENDING)
                 .build();
 
-        if (paymentRepository.existsByAppointmentId(appointment.getId())) {
-            payment.setStatus(PaymentStatus.CANCELED);
+        //arrumar erro q ta retornando 500 quando o pagamento ja existe e ta pendente
+        if (paymentRepository.existsByAppointmentIdAndStatus(appointment.getId(), PaymentStatus.PAID)) {
             throw new ConflictException("Esta consulta ja foi paga.");
         }
+
 
         payment.setStatus(PaymentStatus.PAID);
         paymentRepository.save(payment);
