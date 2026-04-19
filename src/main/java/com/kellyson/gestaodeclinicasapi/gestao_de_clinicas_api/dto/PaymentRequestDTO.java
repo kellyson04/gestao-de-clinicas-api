@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-public record PaymentRequest(
+public record PaymentRequestDTO(
         @NotNull(message = "o id da consulta não pode estar vazio.")
         Long appointmentId,
         @NotNull(message = "Digite o valor da consulta:")
