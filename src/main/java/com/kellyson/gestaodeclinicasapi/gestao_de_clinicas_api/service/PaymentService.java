@@ -43,9 +43,16 @@ public class PaymentService {
                 .status(PaymentStatus.PENDING)
                 .build();
 
-        //arrumar erro q ta retornando 500 quando o pagamento ja existe e ta pendente
+
         if (paymentRepository.existsByAppointmentIdAndStatus(appointment.getId(), PaymentStatus.PAID)) {
             throw new ConflictException("Esta consulta ja foi paga.");
+        }
+        //ter q ver um jeito de aprovar o pendente pq nesse metodo ia ficar meio esquisito
+        if (paymentRepository.existsByAppointmentIdAndStatus(appointment.getId(), PaymentStatus.PENDING)) {
+            throw new ConflictException("Voce ja fez este pagamento porem ainda esta pendente");
+        }
+        if (paymentRepository.existsByAppointmentIdAndStatus(appointment.getId(),PaymentStatus.CANCELED)) {
+            throw new ConflictException("Pagamento ja cancelado, refaça o processo de pagamento");
         }
 
 
