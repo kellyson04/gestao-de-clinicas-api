@@ -13,6 +13,7 @@ public enum DoctorSpecialty {
     NEUROSURGERY,
     NEUROLOGY,
     NUTROLOGY,
+    ORTHOPEDICS,
     PEDIATRICS,
     PNEUMOLOGY,
     PSYCHIATRY,
