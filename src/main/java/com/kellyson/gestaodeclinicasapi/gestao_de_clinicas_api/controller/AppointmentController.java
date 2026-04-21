@@ -1,7 +1,7 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.AppointmentRequestDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.AppointmentResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.AppointmentRequestDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.AppointmentResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.AppointmentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

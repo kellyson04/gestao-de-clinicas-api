@@ -1,6 +1,6 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper;
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.PaymentResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PaymentResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Payment;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.PaymentStatus;
 import lombok.experimental.UtilityClass;

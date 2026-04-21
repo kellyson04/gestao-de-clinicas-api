@@ -1,6 +1,6 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper;
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.AppointmentResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.AppointmentResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Appointment;
 import lombok.experimental.UtilityClass;
 

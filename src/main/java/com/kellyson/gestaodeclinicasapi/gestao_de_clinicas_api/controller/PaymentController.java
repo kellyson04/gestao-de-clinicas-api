@@ -1,7 +1,7 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.PaymentRequestDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.PaymentResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.PaymentRequestDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PaymentResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.PaymentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

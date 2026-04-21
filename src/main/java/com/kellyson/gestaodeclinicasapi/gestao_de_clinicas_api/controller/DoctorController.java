@@ -1,7 +1,7 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.DoctorRequestDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.DoctorResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.DoctorRequestDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.DoctorResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.DoctorSpecialty;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.DoctorService;
 import jakarta.validation.Valid;

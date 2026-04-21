@@ -1,6 +1,6 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception;
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.ErrorResponse;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

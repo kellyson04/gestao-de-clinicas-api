@@ -1,4 +1,4 @@
-package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto;
+package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response;
 
 import lombok.Builder;
 

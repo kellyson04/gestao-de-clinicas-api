@@ -1,4 +1,4 @@
-package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto;
+package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.DoctorSpecialty;
 import jakarta.validation.constraints.NotBlank;
