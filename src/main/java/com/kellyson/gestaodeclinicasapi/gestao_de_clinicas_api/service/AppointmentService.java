@@ -43,6 +43,10 @@ public class AppointmentService {
                 .status(AppointmentStatus.SCHEDULED)
                 .build();
 
+        if (appointmentRepository.existsByDoctorAndDateTime(doctor,appointment.getDateTime())) {
+            throw new ConflictException("Ja existe uma consulta com este médico no mesmo horario");
+        }
+
         appointmentRepository.save(appointment);
 
         return AppointmentMapper.mapToResponse(appointment);
