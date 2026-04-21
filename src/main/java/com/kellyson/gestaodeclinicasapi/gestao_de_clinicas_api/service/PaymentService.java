@@ -26,7 +26,7 @@ public class PaymentService {
         this.appointmentRepository = appointmentRepository;
     }
 
-    public PaymentResponseDTO processPayment (PaymentRequestDTO paymentRequestDTO) {
+    public PaymentResponseDTO registerPayment (PaymentRequestDTO paymentRequestDTO) {
         Appointment appointment = appointmentRepository.findById(paymentRequestDTO.appointmentId()).orElseThrow(() -> new AppointmentNotFoundException("Esta consulta não existe"));
 
         if (appointment.getStatus().equals(AppointmentStatus.DONE)) {
@@ -52,14 +52,25 @@ public class PaymentService {
             throw new ConflictException("Voce ja fez este pagamento porem ainda esta pendente");
         }
         if (paymentRepository.existsByAppointmentIdAndStatus(appointment.getId(),PaymentStatus.CANCELED)) {
-            throw new ConflictException("Pagamento ja cancelado, refaça o processo de pagamento");
+            throw new ConflictException("Pagamento ja cancelado, reagende a consulta e refaça o pagamento");
         }
 
-
-        payment.setStatus(PaymentStatus.PAID);
         paymentRepository.save(payment);
 
        return PaymentMapper.mapToResponse(payment);
+    }
+
+    public void confirmPayment (Long paymentId) {
+        Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new RuntimeException("Não existe nenhum pagamento registrado com esse ID"));
+        Appointment appointment = appointmentRepository.findById(payment.getAppointment().getId()).orElseThrow(() -> new AppointmentNotFoundException("Voce está tentando pagar uma consulta que não existe"));
+
+
+        if (!paymentRepository.existsByAppointmentIdAndStatus(appointment.getId(),PaymentStatus.PENDING)) {
+            throw new RuntimeException("Não existe pagamento pendente para esta consulta");
+        }
+
+        payment.setStatus(PaymentStatus.PAID);
+        paymentRepository.save(payment);
     }
 
     public List<PaymentResponseDTO> listPendentPayment () {
