@@ -21,8 +21,14 @@ public class PaymentController {
     }
 
     @PostMapping
-    public ResponseEntity<PaymentResponseDTO> processPayment (@Valid @RequestBody PaymentRequestDTO paymentRequestDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.processPayment(paymentRequestDTO));
+    public ResponseEntity<PaymentResponseDTO> registerPayment (@Valid @RequestBody PaymentRequestDTO paymentRequestDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.registerPayment(paymentRequestDTO));
+    }
+
+    @PostMapping("/{paymentId}")
+    public ResponseEntity<Void> confirmPayment (@PathVariable Long paymentId) {
+        paymentService.confirmPayment(paymentId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping
