@@ -6,10 +6,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Appointmen
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Patient;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.AppointmentStatus;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.AppointmentNotFoundException;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.ConflictException;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.DoctorNotFoundException;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.PatientNotFoundException;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.*;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.AppointmentMapper;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.AppointmentRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
@@ -70,6 +67,10 @@ public class AppointmentService {
     }
 
     public List<AppointmentResponseDTO> listAppointmentsByPeriod (LocalDateTime firstDate, LocalDateTime lastDate) {
+        if (firstDate.isAfter(lastDate) || lastDate.isBefore(firstDate)) {
+            throw new BadRequestException("Voce esta colocando uma data invalida");
+        }
+
         List<Appointment> appointments = appointmentRepository.findAll().stream()
                 .filter(appointment -> appointment.getDateTime().isAfter(firstDate))
                 .filter(appointment -> appointment.getDateTime().isBefore(lastDate))
