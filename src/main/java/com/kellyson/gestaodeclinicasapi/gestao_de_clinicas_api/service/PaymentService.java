@@ -47,7 +47,6 @@ public class PaymentService {
         if (paymentRepository.existsByAppointmentIdAndStatus(appointment.getId(), PaymentStatus.PAID)) {
             throw new ConflictException("Esta consulta ja foi paga.");
         }
-        //ter q ver um jeito de aprovar o pendente pq nesse metodo ia ficar meio esquisito
         if (paymentRepository.existsByAppointmentIdAndStatus(appointment.getId(), PaymentStatus.PENDING)) {
             throw new ConflictException("Voce ja fez este pagamento porem ainda esta pendente");
         }
