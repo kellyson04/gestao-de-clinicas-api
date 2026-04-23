@@ -1,0 +1,2 @@
+ALTER TABLE payments
+DROP CONSTRAINT payments_appointment_id_key;
