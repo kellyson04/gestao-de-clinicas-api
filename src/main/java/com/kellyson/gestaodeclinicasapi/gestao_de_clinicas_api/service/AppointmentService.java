@@ -71,12 +71,7 @@ public class AppointmentService {
             throw new BadRequestException("Voce esta colocando uma data invalida");
         }
 
-        List<Appointment> appointments = appointmentRepository.findAll().stream()
-                .filter(appointment -> appointment.getDateTime().isAfter(firstDate))
-                .filter(appointment -> appointment.getDateTime().isBefore(lastDate))
-                .toList();
-
-
+        List<Appointment> appointments = appointmentRepository.findAppointmentsByDateTimeBetween(firstDate,lastDate);
 
         return appointments.stream()
                 .map(appointment -> AppointmentMapper.mapToResponse(appointment))
