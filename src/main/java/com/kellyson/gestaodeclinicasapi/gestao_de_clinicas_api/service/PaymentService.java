@@ -37,22 +37,20 @@ public class PaymentService {
             throw new ConflictException("Esta consulta foi cancelada, pagamento invalido");
         }
 
+
+        if (paymentRepository.existsByAppointmentIdAndStatus(appointment.getId(), PaymentStatus.PAID)) {
+            throw new ConflictException("O Pagamento desta Consulta ja foi realizado!.");
+        }
+        if (paymentRepository.existsByAppointmentIdAndStatus(appointment.getId(), PaymentStatus.PENDING)) {
+            throw new ConflictException("Tentativa de pagamento ja feita, status atual: PENDENTE.");
+        }
+
+
         Payment payment = Payment.builder()
                 .appointment(appointment)
                 .amount(paymentRequestDTO.amount())
                 .status(PaymentStatus.PENDING)
                 .build();
-
-
-        if (paymentRepository.existsByAppointmentIdAndStatus(appointment.getId(), PaymentStatus.PAID)) {
-            throw new ConflictException("Esta consulta ja foi paga.");
-        }
-        if (paymentRepository.existsByAppointmentIdAndStatus(appointment.getId(), PaymentStatus.PENDING)) {
-            throw new ConflictException("Voce ja fez este pagamento porem ainda esta pendente");
-        }
-        if (paymentRepository.existsByAppointmentIdAndStatus(appointment.getId(),PaymentStatus.CANCELED)) {
-            throw new ConflictException("Pagamento ja cancelado, reagende a consulta e refaça o pagamento");
-        }
 
         paymentRepository.save(payment);
 
@@ -61,11 +59,13 @@ public class PaymentService {
 
     public void confirmPayment (Long paymentId) {
         Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new RuntimeException("Não existe nenhum pagamento registrado com esse ID"));
-        Appointment appointment = appointmentRepository.findById(payment.getAppointment().getId()).orElseThrow(() -> new AppointmentNotFoundException("Voce está tentando pagar uma consulta que não existe"));
 
+        if (payment.getStatus().equals(PaymentStatus.CANCELED)) {
+            throw new ConflictException("Não é possivel confirmar o Pagamento pois ja consta como Cancelado.");
+        }
 
-        if (!paymentRepository.existsByAppointmentIdAndStatus(appointment.getId(),PaymentStatus.PENDING)) {
-            throw new RuntimeException("Não existe pagamento pendente para esta consulta");
+        if (payment.getStatus().equals(PaymentStatus.PAID)) {
+            throw new ConflictException("Não é possivel confirmar o Pagamento pois ja consta como Pago");
         }
 
         payment.setStatus(PaymentStatus.PAID);
