@@ -44,6 +44,10 @@ public class AppointmentService {
             throw new ConflictException("Ja existe uma consulta com este médico no mesmo horario");
         }
 
+        if (patient.getIsActive() == false || doctor.getIsActive() == false) {
+            throw new ConflictException("Paciente ou Médico se encontra inativo");
+        }
+
         appointmentRepository.save(appointment);
 
         return AppointmentMapper.mapToResponse(appointment);
