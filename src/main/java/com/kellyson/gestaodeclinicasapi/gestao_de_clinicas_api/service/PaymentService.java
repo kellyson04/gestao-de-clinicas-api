@@ -2,6 +2,7 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.PaymentRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PaymentResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PendingPaymentPatientResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Appointment;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Payment;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.AppointmentStatus;
@@ -72,11 +73,7 @@ public class PaymentService {
         paymentRepository.save(payment);
     }
 
-    public List<PaymentResponseDTO> listPendentPayment () {
-        List<Payment> pendentPayments = paymentRepository.findByStatus(PaymentStatus.PENDING);
-
-        return pendentPayments.stream()
-                .map(payment -> PaymentMapper.mapToResponse(payment))
-                .toList();
+    public List <PendingPaymentPatientResponseDTO> patientsWithPendingPayments () {
+        return paymentRepository.listPatientsWithPendingPayment(PaymentStatus.PENDING);
     }
 }
