@@ -2,6 +2,7 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.PaymentRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PaymentResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PendingPaymentPatientResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.PaymentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -31,8 +32,8 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<PaymentResponseDTO>> listPendentPayments () {
-        return ResponseEntity.status(HttpStatus.OK).body(paymentService.listPendentPayment());
+    @GetMapping("/pending")
+    public ResponseEntity<List<PendingPaymentPatientResponseDTO>> patientsWithPendingPayments () {
+        return ResponseEntity.status(HttpStatus.OK).body(paymentService.patientsWithPendingPayments());
     }
 }
