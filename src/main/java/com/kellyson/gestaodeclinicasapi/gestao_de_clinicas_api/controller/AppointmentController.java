@@ -41,7 +41,7 @@ public class AppointmentController {
         return ResponseEntity.status(HttpStatus.OK).body(appointmentService.listPatientScheduledAppointments(patientId));
     }
 
-    @GetMapping("/{patientId}")
+    @GetMapping("/{patientId}/patient")
     public ResponseEntity<List<AppointmentResponseDTO>> listPatientAppointmentsHistory (@PathVariable Long patientId) {
         return ResponseEntity.status(HttpStatus.OK).body(appointmentService.listPatientAppointmentsHistory(patientId));
     }
@@ -49,5 +49,10 @@ public class AppointmentController {
     @GetMapping("/{doctorId}/scheduled/doctors")
     public ResponseEntity<List<AppointmentResponseDTO>> listDoctorScheduledAppointments (@PathVariable Long doctorId) {
         return ResponseEntity.status(HttpStatus.OK).body(appointmentService.listDoctorScheduledAppointment(doctorId));
+    }
+
+    @GetMapping("/{doctorId}/doctor")
+    public ResponseEntity<List<AppointmentResponseDTO>> listDoctorAppointmentsHistory (@PathVariable Long doctorId) {
+        return ResponseEntity.status(HttpStatus.OK).body(appointmentService.listDoctorAppointmentsHistory(doctorId));
     }
 }
