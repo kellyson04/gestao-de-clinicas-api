@@ -1,6 +1,7 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.PatientRequestDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.AppointmentResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PatientResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.PatientService;
 import jakarta.validation.Valid;
@@ -35,5 +36,12 @@ public class PatientController {
     @GetMapping("/{cpf}")
     public ResponseEntity<PatientResponseDTO> findByCpf (@PathVariable String cpf) {
         return ResponseEntity.ok(patientService.findByCpf(cpf));
+    }
+
+
+    @PatchMapping("/{patientId}")
+    public ResponseEntity<Void> deactivePatient (@PathVariable Long patientId) {
+        patientService.softDelete(patientId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
