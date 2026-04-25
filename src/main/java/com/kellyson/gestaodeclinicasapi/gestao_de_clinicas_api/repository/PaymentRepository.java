@@ -26,7 +26,5 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
         WHERE pay.status = 'PENDING'
         GROUP BY pat.id,pat.name
         """)
-    List<PendingPaymentPatientResponseDTO> listPatientsWithPendingPayment (
-            @Param("status") PaymentStatus status
-    );
+    List<PendingPaymentPatientResponseDTO> listPatientsWithPendingPayment (PaymentStatus status);
 }
