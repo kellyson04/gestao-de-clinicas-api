@@ -82,7 +82,6 @@ public class AppointmentService {
         Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException("Paciente não encontrado"));
 
         List<Appointment> appointments = appointmentRepository.findByPatientAndStatus(patient,AppointmentStatus.SCHEDULED);
-
         return appointments.stream()
                 .map(appointment -> AppointmentMapper.mapToResponse(appointment))
                 .toList();
@@ -95,5 +94,15 @@ public class AppointmentService {
                 .map(appointment -> AppointmentMapper.mapToResponse(appointment))
                 .toList();
 
+    }
+
+    public List<AppointmentResponseDTO> listDoctorScheduledAppointment (Long doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado"));
+
+        List<Appointment> appointments = appointmentRepository.findByDoctorAndStatus(doctor,AppointmentStatus.SCHEDULED);
+
+        return appointments.stream()
+                .map(appointment -> AppointmentMapper.mapToResponse(appointment))
+                .toList();
     }
 }
