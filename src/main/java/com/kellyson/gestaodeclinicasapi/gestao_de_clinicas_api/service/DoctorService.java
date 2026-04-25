@@ -4,6 +4,8 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.Docto
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.DoctorResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.DoctorSpecialty;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.ConflictException;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.DoctorNotFoundException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.DoctorMapper;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
 import org.springframework.stereotype.Service;
@@ -29,5 +31,17 @@ public class DoctorService {
                 .stream()
                 .map(doctor -> DoctorMapper.mapToResponse(doctor))
                 .toList();
+    }
+
+    public void softDelete (Long doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado."));
+
+        if (!doctor.getIsActive()) {
+            throw new ConflictException("O médico ja está inativo.");
+        }
+
+        doctor.setIsActive(false);
+
+        doctorRepository.save(doctor);
     }
 }

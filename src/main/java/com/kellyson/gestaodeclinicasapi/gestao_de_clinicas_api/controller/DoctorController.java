@@ -30,4 +30,10 @@ public class DoctorController {
     public ResponseEntity<List<DoctorResponseDTO>> listBySpecialty (@RequestParam DoctorSpecialty specialty) {
         return ResponseEntity.ok(doctorService.findBySpecialty(specialty));
     }
+
+    @PatchMapping("/{doctorId}")
+    public ResponseEntity<Void> deactiveDoctor (@PathVariable Long doctorId) {
+        doctorService.softDelete(doctorId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }
