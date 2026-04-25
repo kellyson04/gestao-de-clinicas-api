@@ -36,8 +36,23 @@ public class AppointmentController {
         return ResponseEntity.status(HttpStatus.OK).body(appointmentService.listAppointmentsByPeriod(firstDate,lastDate));
     }
 
-    @GetMapping("/{patientId}")
-    public ResponseEntity<List<AppointmentResponseDTO>> listPatientAppointments (@PathVariable Long patientId) {
-        return ResponseEntity.status(HttpStatus.OK).body(appointmentService.listPatientAppointments(patientId));
+    @GetMapping("/{patientId}/scheduled/patients")
+    public ResponseEntity<List<AppointmentResponseDTO>> listPatientScheduledAppointments (@PathVariable Long patientId) {
+        return ResponseEntity.status(HttpStatus.OK).body(appointmentService.listPatientScheduledAppointments(patientId));
+    }
+
+    @GetMapping("/{patientId}/patient")
+    public ResponseEntity<List<AppointmentResponseDTO>> listPatientAppointmentsHistory (@PathVariable Long patientId) {
+        return ResponseEntity.status(HttpStatus.OK).body(appointmentService.listPatientAppointmentsHistory(patientId));
+    }
+
+    @GetMapping("/{doctorId}/scheduled/doctors")
+    public ResponseEntity<List<AppointmentResponseDTO>> listDoctorScheduledAppointments (@PathVariable Long doctorId) {
+        return ResponseEntity.status(HttpStatus.OK).body(appointmentService.listDoctorScheduledAppointment(doctorId));
+    }
+
+    @GetMapping("/{doctorId}/doctor")
+    public ResponseEntity<List<AppointmentResponseDTO>> listDoctorAppointmentsHistory (@PathVariable Long doctorId) {
+        return ResponseEntity.status(HttpStatus.OK).body(appointmentService.listDoctorAppointmentsHistory(doctorId));
     }
 }

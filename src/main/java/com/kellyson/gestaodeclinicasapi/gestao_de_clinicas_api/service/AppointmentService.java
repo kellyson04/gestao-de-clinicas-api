@@ -78,12 +78,38 @@ public class AppointmentService {
                 .toList();
     }
 
-    public List<AppointmentResponseDTO> listPatientAppointments (Long patientId) {
+    public List<AppointmentResponseDTO> listPatientScheduledAppointments (Long patientId) {
         Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException("Paciente não encontrado"));
 
         List<Appointment> appointments = appointmentRepository.findByPatientAndStatus(patient,AppointmentStatus.SCHEDULED);
+        return appointments.stream()
+                .map(appointment -> AppointmentMapper.mapToResponse(appointment))
+                .toList();
+    }
+
+    public List<AppointmentResponseDTO> listPatientAppointmentsHistory (Long patientId) {
+        Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException("Paciente não encontrado"));
+
+        return appointmentRepository.findByPatient(patient).stream()
+                .map(appointment -> AppointmentMapper.mapToResponse(appointment))
+                .toList();
+
+    }
+
+    public List<AppointmentResponseDTO> listDoctorScheduledAppointment (Long doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado"));
+
+        List<Appointment> appointments = appointmentRepository.findByDoctorAndStatus(doctor,AppointmentStatus.SCHEDULED);
 
         return appointments.stream()
+                .map(appointment -> AppointmentMapper.mapToResponse(appointment))
+                .toList();
+    }
+
+    public List<AppointmentResponseDTO> listDoctorAppointmentsHistory (Long doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado"));
+
+        return appointmentRepository.findByDoctor(doctor).stream()
                 .map(appointment -> AppointmentMapper.mapToResponse(appointment))
                 .toList();
     }
