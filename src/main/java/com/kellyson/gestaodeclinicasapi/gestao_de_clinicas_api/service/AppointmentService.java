@@ -105,4 +105,12 @@ public class AppointmentService {
                 .map(appointment -> AppointmentMapper.mapToResponse(appointment))
                 .toList();
     }
+
+    public List<AppointmentResponseDTO> listDoctorAppointmentsHistory (Long doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado"));
+
+        return appointmentRepository.findByDoctor(doctor).stream()
+                .map(appointment -> AppointmentMapper.mapToResponse(appointment))
+                .toList();
+    }
 }
