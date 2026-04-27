@@ -13,6 +13,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.PaymentMap
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.AppointmentRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PaymentRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class PaymentService {
         this.appointmentRepository = appointmentRepository;
     }
 
+    @Transactional
     public PaymentResponseDTO registerPayment (PaymentRequestDTO paymentRequestDTO) {
         Appointment appointment = appointmentRepository.findById(paymentRequestDTO.appointmentId()).orElseThrow(() -> new AppointmentNotFoundException("Esta consulta não existe"));
 
@@ -58,6 +60,7 @@ public class PaymentService {
        return PaymentMapper.mapToResponse(payment);
     }
 
+    @Transactional
     public void confirmPayment (Long paymentId) {
         Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new RuntimeException("Não existe nenhum pagamento registrado com esse ID"));
 
@@ -70,9 +73,9 @@ public class PaymentService {
         }
 
         payment.setStatus(PaymentStatus.PAID);
-        paymentRepository.save(payment);
     }
 
+    @Transactional(readOnly = true)
     public List <PendingPaymentPatientResponseDTO> patientsWithPendingPayments () {
         return paymentRepository.listPatientsWithPendingPayment(PaymentStatus.PENDING);
     }

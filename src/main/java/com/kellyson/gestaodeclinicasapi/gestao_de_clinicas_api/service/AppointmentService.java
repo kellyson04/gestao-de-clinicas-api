@@ -12,6 +12,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.Appoin
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PatientRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,6 +30,7 @@ public class AppointmentService {
         this.doctorRepository = doctorRepository;
     }
 
+    @Transactional
     public AppointmentResponseDTO scheduleAppointment (AppointmentRequestDTO appointmentRequestDTO) {
         Patient patient = patientRepository.findById(appointmentRequestDTO.patientId()).orElseThrow(() -> new PatientNotFoundException("Paciente não encontrado"));
         Doctor doctor = doctorRepository.findById(appointmentRequestDTO.doctorId()).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado"));
@@ -53,6 +55,7 @@ public class AppointmentService {
         return AppointmentMapper.mapToResponse(appointment);
     }
 
+    @Transactional
     public AppointmentResponseDTO cancelAppointment (Long id) {
         Appointment appointment = appointmentRepository.findById(id).orElseThrow(() -> new AppointmentNotFoundException("Essa consulta não existe"));
 
@@ -65,11 +68,10 @@ public class AppointmentService {
 
         appointment.setStatus(AppointmentStatus.CANCELED);
 
-        appointmentRepository.save(appointment);
-
         return AppointmentMapper.mapToResponse(appointment);
     }
 
+    @Transactional(readOnly = true)
     public List<AppointmentResponseDTO> listAppointmentsByPeriod (LocalDateTime firstDate, LocalDateTime lastDate) {
         if (firstDate.isAfter(lastDate) || lastDate.isBefore(firstDate)) {
             throw new BadRequestException("Voce esta colocando uma data invalida");
@@ -82,6 +84,7 @@ public class AppointmentService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<AppointmentResponseDTO> listPatientScheduledAppointments (Long patientId) {
         Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException("Paciente não encontrado"));
 
@@ -91,6 +94,7 @@ public class AppointmentService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<AppointmentResponseDTO> listPatientAppointmentsHistory (Long patientId) {
         Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException("Paciente não encontrado"));
 
@@ -100,6 +104,7 @@ public class AppointmentService {
 
     }
 
+    @Transactional(readOnly = true)
     public List<AppointmentResponseDTO> listDoctorScheduledAppointment (Long doctorId) {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado"));
 
@@ -110,6 +115,7 @@ public class AppointmentService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<AppointmentResponseDTO> listDoctorAppointmentsHistory (Long doctorId) {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado"));
 
