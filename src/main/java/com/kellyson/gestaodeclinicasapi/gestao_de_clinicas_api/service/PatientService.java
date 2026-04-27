@@ -8,6 +8,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.Patient
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.PatientMapper;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PatientRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class PatientService {
         return PatientMapper.mapToResponse(savePatient);
     }
 
+    @Transactional(readOnly = true)
     public List<PatientResponseDTO> listPatients () {
         return patientRepository.findAll()
                 .stream()
@@ -39,6 +41,7 @@ public class PatientService {
         return PatientMapper.mapToResponse(patientByCpf);
     }
 
+    @Transactional
     public void softDelete (Long patientId) {
         Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException("Paciente não encontrado."));
 
@@ -47,7 +50,5 @@ public class PatientService {
         }
 
         patient.setIsActive(false);
-
-        patientRepository.save(patient);
     }
 }

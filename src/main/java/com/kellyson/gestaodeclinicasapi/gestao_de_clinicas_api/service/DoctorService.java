@@ -9,6 +9,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.DoctorN
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.DoctorMapper;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +27,8 @@ public class DoctorService {
         return DoctorMapper.mapToResponse(doctor);
     }
 
+
+    @Transactional(readOnly = true)
     public List<DoctorResponseDTO> findBySpecialty (DoctorSpecialty specialty) {
         return doctorRepository.findBySpecialty(specialty)
                 .stream()
@@ -33,6 +36,7 @@ public class DoctorService {
                 .toList();
     }
 
+    @Transactional
     public void softDelete (Long doctorId) {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado."));
 
@@ -41,7 +45,5 @@ public class DoctorService {
         }
 
         doctor.setIsActive(false);
-
-        doctorRepository.save(doctor);
     }
 }
