@@ -7,6 +7,8 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.Conflic
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.PatientNotFoundException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.PatientMapper;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PatientRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,14 +24,23 @@ public class PatientService {
     }
 
     public PatientResponseDTO createPatient (PatientRequestDTO patientRequestDTO) {
-        Patient savePatient = patientRepository.save(PatientMapper.mapToEntity(patientRequestDTO));
 
-        return PatientMapper.mapToResponse(savePatient);
+        Patient patient = Patient.builder()
+                .name(patientRequestDTO.name())
+                .cpf(patientRequestDTO.cpf())
+                .birthDate(patientRequestDTO.birthDate())
+                .isActive(true)
+                .build();
+
+        patientRepository.save(patient);
+
+        return PatientMapper.mapToResponse(patient);
     }
 
     @Transactional(readOnly = true)
-    public List<PatientResponseDTO> listPatients () {
-        return patientRepository.findAll()
+    public List <PatientResponseDTO> listPatients (Pageable pageable) {
+        return patientRepository.findAll(pageable)
+                .getContent()
                 .stream()
                 .map(patient -> PatientMapper.mapToResponse(patient))
                 .toList();
