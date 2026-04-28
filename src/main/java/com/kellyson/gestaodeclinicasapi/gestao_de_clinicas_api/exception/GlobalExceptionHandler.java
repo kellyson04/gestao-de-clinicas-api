@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse> handleBadRequest (BadRequestException b) {
         ErrorResponse error = ErrorResponse.builder()
-                .status(404)
+                .status(400)
                 .error("BAD_REQUEST")
                 .message(b.getMessage())
                 .build();
