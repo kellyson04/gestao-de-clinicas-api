@@ -4,6 +4,8 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.Pend
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Payment;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.AppointmentStatus;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.PaymentStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,5 +28,5 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
         WHERE pay.status = 'PENDING'
         GROUP BY pat.id,pat.name
         """)
-    List<PendingPaymentPatientResponseDTO> listPatientsWithPendingPayment (PaymentStatus status);
+    Page<PendingPaymentPatientResponseDTO> listPatientsWithPendingPayment (PaymentStatus status, Pageable pageable);
 }
