@@ -11,6 +11,8 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.Appointmen
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.AppointmentRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PatientRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,12 +74,12 @@ public class AppointmentService {
     }
 
     @Transactional(readOnly = true)
-    public List<AppointmentResponseDTO> listAppointmentsByPeriod (LocalDateTime firstDate, LocalDateTime lastDate) {
+    public List<AppointmentResponseDTO> listAppointmentsByPeriod (LocalDateTime firstDate, LocalDateTime lastDate,Pageable pageable) {
         if (firstDate.isAfter(lastDate) || lastDate.isBefore(firstDate)) {
             throw new BadRequestException("Voce esta colocando uma data invalida");
         }
 
-        List<Appointment> appointments = appointmentRepository.findAppointmentsByDateTimeBetween(firstDate,lastDate);
+        Page<Appointment> appointments = appointmentRepository.findAppointmentsByDateTimeBetween(firstDate,lastDate,pageable);
 
         return appointments.stream()
                 .map(appointment -> AppointmentMapper.mapToResponse(appointment))
@@ -85,30 +87,30 @@ public class AppointmentService {
     }
 
     @Transactional(readOnly = true)
-    public List<AppointmentResponseDTO> listPatientScheduledAppointments (Long patientId) {
+    public List<AppointmentResponseDTO> listPatientScheduledAppointments (Long patientId,Pageable pageable) {
         Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException("Paciente não encontrado"));
 
-        List<Appointment> appointments = appointmentRepository.findByPatientAndStatus(patient,AppointmentStatus.SCHEDULED);
+        Page<Appointment> appointments = appointmentRepository.findByPatientAndStatus(patient,AppointmentStatus.SCHEDULED,pageable);
         return appointments.stream()
                 .map(appointment -> AppointmentMapper.mapToResponse(appointment))
                 .toList();
     }
 
     @Transactional(readOnly = true)
-    public List<AppointmentResponseDTO> listPatientAppointmentsHistory (Long patientId) {
+    public List<AppointmentResponseDTO> listPatientAppointmentsHistory (Long patientId, Pageable pageable) {
         Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException("Paciente não encontrado"));
 
-        return appointmentRepository.findByPatient(patient).stream()
+        return appointmentRepository.findByPatient(patient,pageable).stream()
                 .map(appointment -> AppointmentMapper.mapToResponse(appointment))
                 .toList();
 
     }
 
     @Transactional(readOnly = true)
-    public List<AppointmentResponseDTO> listDoctorScheduledAppointment (Long doctorId) {
+    public List<AppointmentResponseDTO> listDoctorScheduledAppointment (Long doctorId,Pageable pageable) {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado"));
 
-        List<Appointment> appointments = appointmentRepository.findByDoctorAndStatus(doctor,AppointmentStatus.SCHEDULED);
+        Page<Appointment> appointments = appointmentRepository.findByDoctorAndStatus(doctor,AppointmentStatus.SCHEDULED,pageable);
 
         return appointments.stream()
                 .map(appointment -> AppointmentMapper.mapToResponse(appointment))
@@ -116,10 +118,11 @@ public class AppointmentService {
     }
 
     @Transactional(readOnly = true)
-    public List<AppointmentResponseDTO> listDoctorAppointmentsHistory (Long doctorId) {
+    public List<AppointmentResponseDTO> listDoctorAppointmentsHistory (Long doctorId, Pageable pageable) {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado"));
 
-        return appointmentRepository.findByDoctor(doctor).stream()
+        return appointmentRepository.findByDoctor(doctor,pageable)
+                .stream()
                 .map(appointment -> AppointmentMapper.mapToResponse(appointment))
                 .toList();
     }
