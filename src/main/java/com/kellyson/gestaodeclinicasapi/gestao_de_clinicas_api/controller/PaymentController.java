@@ -5,6 +5,8 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.Paym
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PendingPaymentPatientResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.PaymentService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +24,7 @@ public class PaymentController {
     }
 
     @PostMapping
-    public ResponseEntity<PaymentResponseDTO> registerPayment (@Valid @RequestBody PaymentRequestDTO paymentRequestDTO) {
+    public ResponseEntity <PaymentResponseDTO> registerPayment (@Valid @RequestBody PaymentRequestDTO paymentRequestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.registerPayment(paymentRequestDTO));
     }
 
@@ -33,7 +35,7 @@ public class PaymentController {
     }
 
     @GetMapping("/pending")
-    public ResponseEntity<List<PendingPaymentPatientResponseDTO>> patientsWithPendingPayments () {
-        return ResponseEntity.status(HttpStatus.OK).body(paymentService.patientsWithPendingPayments());
+    public ResponseEntity <List<PendingPaymentPatientResponseDTO>> patientsWithPendingPayments (@PageableDefault(size = 10)Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(paymentService.patientsWithPendingPayments(pageable));
     }
 }

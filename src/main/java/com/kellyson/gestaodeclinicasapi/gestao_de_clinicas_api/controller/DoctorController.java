@@ -5,6 +5,8 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.Doct
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.DoctorSpecialty;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.DoctorService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +29,9 @@ public class DoctorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DoctorResponseDTO>> listBySpecialty (@RequestParam DoctorSpecialty specialty) {
-        return ResponseEntity.ok(doctorService.findBySpecialty(specialty));
+    public ResponseEntity<List<DoctorResponseDTO>> listBySpecialty (@RequestParam DoctorSpecialty specialty,
+                                                                    @PageableDefault(size = 10) Pageable pageable) {
+        return ResponseEntity.ok(doctorService.findBySpecialty(specialty,pageable));
     }
 
     @PatchMapping("/{doctorId}")

@@ -8,9 +8,11 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.Conflic
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.DoctorNotFoundException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.DoctorMapper;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.print.Doc;
 import java.util.List;
 
 @Service
@@ -22,15 +24,22 @@ public class DoctorService {
     }
 
     public DoctorResponseDTO createDoctor (DoctorRequestDTO doctorRequestDTO) {
-        Doctor doctor = doctorRepository.save(DoctorMapper.mapToEntity(doctorRequestDTO));
+        Doctor doctor = Doctor.builder()
+                .name(doctorRequestDTO.name())
+                .specialty(doctorRequestDTO.specialty())
+                .isActive(true)
+                .build();
+
+        doctorRepository.save(doctor);
 
         return DoctorMapper.mapToResponse(doctor);
     }
 
 
     @Transactional(readOnly = true)
-    public List<DoctorResponseDTO> findBySpecialty (DoctorSpecialty specialty) {
-        return doctorRepository.findBySpecialty(specialty)
+    public List<DoctorResponseDTO> findBySpecialty (DoctorSpecialty specialty, Pageable pageable) {
+        return doctorRepository.findBySpecialty(specialty,pageable)
+                .getContent()
                 .stream()
                 .map(doctor -> DoctorMapper.mapToResponse(doctor))
                 .toList();

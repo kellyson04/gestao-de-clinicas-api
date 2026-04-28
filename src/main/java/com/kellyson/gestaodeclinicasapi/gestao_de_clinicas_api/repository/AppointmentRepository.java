@@ -4,6 +4,8 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Appointmen
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Patient;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.AppointmentStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,7 +17,7 @@ import java.util.Optional;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
-    List<Appointment> findByPatientAndStatus (Patient patient, AppointmentStatus status);
+    Page<Appointment> findByPatientAndStatus (Patient patient, AppointmentStatus status,Pageable pageable);
     boolean existsByDoctorAndDateTime(Doctor doctor, LocalDateTime date);
     @Query("""
             SELECT app 
@@ -24,11 +26,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
             JOIN FETCH app.doctor
             WHERE app.dateTime BETWEEN :startDate AND :endDate
             """)
-    List<Appointment> findAppointmentsByDateTimeBetween(
+    Page<Appointment> findAppointmentsByDateTimeBetween(
             @Param("startDate") LocalDateTime startDate,
-            @Param("endDate") LocalDateTime endDate
+            @Param("endDate") LocalDateTime endDate,
+            Pageable pageable
     );
-    List<Appointment> findByPatient(Patient patient);
-    List<Appointment> findByDoctorAndStatus (Doctor doctor,AppointmentStatus status);
-    List<Appointment> findByDoctor(Doctor doctor);
+    Page<Appointment> findByPatient(Patient patient, Pageable pageable);
+    Page<Appointment> findByDoctorAndStatus (Doctor doctor,AppointmentStatus status, Pageable pageable);
+    Page<Appointment> findByDoctor(Doctor doctor, Pageable pageable);
 }
