@@ -9,6 +9,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.Appointment
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.PaymentStatus;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.AppointmentNotFoundException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.ConflictException;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.PaymentNotFoundException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.PaymentMapper;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.AppointmentRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PaymentRepository;
@@ -63,7 +64,7 @@ public class PaymentService {
 
     @Transactional
     public void confirmPayment (Long paymentId) {
-        Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new RuntimeException("Não existe nenhum pagamento registrado com esse ID"));
+        Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new PaymentNotFoundException("Não existe nenhum pagamento registrado com esse ID"));
 
         if (payment.getStatus().equals(PaymentStatus.CANCELED)) {
             throw new ConflictException("Não é possivel confirmar o Pagamento pois ja consta como Cancelado.");
@@ -72,6 +73,8 @@ public class PaymentService {
         if (payment.getStatus().equals(PaymentStatus.PAID)) {
             throw new ConflictException("Não é possivel confirmar o Pagamento pois ja consta como Pago");
         }
+
+
 
         payment.setStatus(PaymentStatus.PAID);
     }
