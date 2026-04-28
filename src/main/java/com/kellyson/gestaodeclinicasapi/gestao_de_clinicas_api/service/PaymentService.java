@@ -12,6 +12,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.Conflic
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.PaymentMapper;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.AppointmentRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PaymentRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,7 +77,8 @@ public class PaymentService {
     }
 
     @Transactional(readOnly = true)
-    public List <PendingPaymentPatientResponseDTO> patientsWithPendingPayments () {
-        return paymentRepository.listPatientsWithPendingPayment(PaymentStatus.PENDING);
+    public List <PendingPaymentPatientResponseDTO> patientsWithPendingPayments (Pageable pageable) {
+        return paymentRepository.listPatientsWithPendingPayment(PaymentStatus.PENDING,pageable)
+                .getContent();
     }
 }
