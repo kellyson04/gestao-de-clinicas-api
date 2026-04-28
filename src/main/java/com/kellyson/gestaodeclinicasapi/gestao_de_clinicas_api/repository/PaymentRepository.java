@@ -28,5 +28,5 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
         WHERE pay.status = 'PENDING'
         GROUP BY pat.id,pat.name
         """)
-    Page<PendingPaymentPatientResponseDTO> listPatientsWithPendingPayment (PaymentStatus status, Pageable pageable);
+    Page<PendingPaymentPatientResponseDTO> listPatientsWithPendingPayment (Pageable pageable);
 }

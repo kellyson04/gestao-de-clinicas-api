@@ -81,7 +81,7 @@ public class PaymentService {
 
     @Transactional(readOnly = true)
     public List <PendingPaymentPatientResponseDTO> patientsWithPendingPayments (Pageable pageable) {
-        return paymentRepository.listPatientsWithPendingPayment(PaymentStatus.PENDING,pageable)
+        return paymentRepository.listPatientsWithPendingPayment(pageable)
                 .getContent();
     }
 }
