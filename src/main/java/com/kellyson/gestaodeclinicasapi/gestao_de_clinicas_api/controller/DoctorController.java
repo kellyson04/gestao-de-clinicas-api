@@ -55,7 +55,7 @@ public class DoctorController {
         return ResponseEntity.ok(doctorService.findBySpecialty(specialty,pageable));
     }
 
-    @PatchMapping("/{doctorId}")
+    @PatchMapping("/{doctorId}/deactivate")
     @Operation(summary = "Desativar Médico")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Médico desativado com sucesso"),
