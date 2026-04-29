@@ -27,7 +27,7 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @PostMapping
+    @PostMapping("/register")
     @Operation(summary = "Registrar Pagamento", description = "Usuario registra o pagamento no sistema")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Pagamento registrado com sucesso"),
@@ -42,7 +42,7 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.registerPayment(paymentRequestDTO));
     }
 
-    @PatchMapping("/retry/{paymentId}")
+    @PatchMapping("/{paymentId}/retry")
     @Operation(summary = "Refazer Pagamento Cancelado",
                description = "Refaz o Pagamento pra consulta caso o antigo tenha status CANCELED")
     @ApiResponses(value = {
@@ -61,7 +61,7 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.OK).body(paymentService.retryPayment(paymentId,paymentRequestDTO));
     }
 
-    @PostMapping("/{paymentId}")
+    @PatchMapping("/{paymentId}/confirm")
     @Operation(summary = "Confirmar Pagamento", description = "Confirmar pagamento que ficou pendente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pagamento confirmado com sucesso"),
@@ -73,7 +73,7 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/pending")
+    @GetMapping("/pending/patients")
     @Operation(summary = "Listar Pacientes com Pagamentos Pendentes")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listagem de pacientes com pagamento pendente efetuada com sucesso")

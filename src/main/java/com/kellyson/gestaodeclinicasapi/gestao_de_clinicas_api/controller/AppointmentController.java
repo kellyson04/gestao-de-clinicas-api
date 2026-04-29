@@ -43,7 +43,7 @@ public class AppointmentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(appointmentService.scheduleAppointment(appointmentRequestDTO));
     }
 
-    @PatchMapping("/{appointmentId}")
+    @PatchMapping("/{appointmentId}/cancel")
     @Operation(summary = "Cancelar consulta")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Consulta cancelada com sucesso"),
@@ -76,7 +76,7 @@ public class AppointmentController {
         return ResponseEntity.status(HttpStatus.OK).body(appointmentService.listAppointmentsByPeriod(firstDate,lastDate,pageable));
     }
 
-    @GetMapping("/{patientId}/scheduled/patients")
+    @GetMapping("/patients/{patientId}/scheduled")
     @Operation(summary = "Listar consultas agendadas do Paciente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Consultas agendadas do Paciente listadas com sucesso"),
@@ -91,7 +91,7 @@ public class AppointmentController {
         return ResponseEntity.status(HttpStatus.OK).body(appointmentService.listPatientScheduledAppointments(patientId,pageable));
     }
 
-    @GetMapping("/{patientId}/patient")
+    @GetMapping("/patients/{patientId}")
     @Operation(summary = "Listar histórico de consultas do Paciente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Histórico de consultas do Paciente listado com sucesso"),
@@ -106,7 +106,7 @@ public class AppointmentController {
         return ResponseEntity.status(HttpStatus.OK).body(appointmentService.listPatientAppointmentsHistory(patientId,pageable));
     }
 
-    @GetMapping("/{doctorId}/scheduled/doctors")
+    @GetMapping("/doctors/{doctorId}/scheduled")
     @Operation(summary = "Listar consultas agendadas do Médico")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Consultas agendadas do Médico listadas com sucesso"),
@@ -121,7 +121,7 @@ public class AppointmentController {
         return ResponseEntity.status(HttpStatus.OK).body(appointmentService.listDoctorScheduledAppointment(doctorId,pageable));
     }
 
-    @GetMapping("/{doctorId}/doctor")
+    @GetMapping("/doctors/{doctorId}")
     @Operation(summary = "Listar histórico de consultas do Médico")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Histórico de consultas do Médico listado com sucesso"),

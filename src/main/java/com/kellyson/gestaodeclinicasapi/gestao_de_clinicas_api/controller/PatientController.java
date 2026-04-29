@@ -69,7 +69,7 @@ public class PatientController {
     }
 
 
-    @PatchMapping("/{patientId}")
+    @PatchMapping("/{patientId}/deactivate")
     @Operation(summary = "Desativar Paciente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Paciente desativado com sucesso"),
