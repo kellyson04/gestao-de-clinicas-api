@@ -8,7 +8,9 @@ import java.math.BigDecimal;
 
 @Builder
 public record PaymentResponseDTO(
-        Appointment appointment,
+        Long appointmentId,
+        String patientName,
+        String doctorName,
         BigDecimal amount,
         PaymentStatus status
 ) {
