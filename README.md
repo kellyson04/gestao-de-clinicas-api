@@ -123,3 +123,13 @@ O projeto tem como objetivo praticar backend com foco em modelagem de entidades,
 ```bash
 git clone https://github.com/kellyson04/gestao-de-clinicas-api.git
 cd gestao-de-clinicas-api
+./mvnw spring-boot:run
+
+No Windows:
+mvnw.cmd spring-boot:run
+
+A API ficará disponível em:
+http://localhost:8081
+
+A documentação Swagger ficará disponível em:
+http://localhost:8081/swagger-ui/index.html
