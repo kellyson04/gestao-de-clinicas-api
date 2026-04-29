@@ -8,6 +8,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Payment;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.AppointmentStatus;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.PaymentStatus;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.AppointmentNotFoundException;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.BadRequestException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.ConflictException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.PaymentNotFoundException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.PaymentMapper;
@@ -57,9 +58,33 @@ public class PaymentService {
                 .status(PaymentStatus.PENDING)
                 .build();
 
+
         paymentRepository.save(payment);
 
        return PaymentMapper.mapToResponse(payment);
+    }
+
+    @Transactional
+    public PaymentResponseDTO retryPayment (Long paymentId,PaymentRequestDTO paymentRequestDTO) {
+        Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new PaymentNotFoundException("Pagamento não encontrado"));
+        Appointment appointment = appointmentRepository.findById(paymentRequestDTO.appointmentId()).orElseThrow(() -> new AppointmentNotFoundException("Esta consulta não existe"));
+
+        if (appointment.getStatus().equals(AppointmentStatus.DONE)) {
+            throw new ConflictException("Consulta ja realizada, pagamento invalido");
+        }
+
+        if (appointment.getStatus().equals(AppointmentStatus.CANCELED)) {
+            throw new ConflictException("Esta consulta foi cancelada, pagamento invalido");
+        }
+
+
+        if (!paymentRepository.existsByIdAndAppointmentIdAndStatus(payment.getId(),paymentRequestDTO.appointmentId(),PaymentStatus.CANCELED)) {
+            throw new BadRequestException("Não exite pagamento cancelado com este ID");
+        }
+
+        payment.setStatus(PaymentStatus.PENDING);
+
+        return PaymentMapper.mapToResponse(payment);
     }
 
     @Transactional
