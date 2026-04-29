@@ -50,7 +50,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "404", description = "Consulta não encontrada"),
             @ApiResponse(responseCode = "409", description = "Consulta ja está cancelada ou não pode ser cancelada")
     })
-    public ResponseEntity<AppointmentResponseDTO> cancelAppointment (
+    public ResponseEntity <AppointmentResponseDTO> cancelAppointment (
                                                   @Parameter(description = "Usuario manda o ID da Consulta no path da requisição",
                                                              required = true)
                                                   @PathVariable Long appointmentId) {
@@ -63,7 +63,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200", description = "Listagem por periodo efetuada"),
             @ApiResponse(responseCode = "400", description = "Datas invalidas ou mal formatadas")
     })
-    public ResponseEntity<List<AppointmentResponseDTO>> listAppointmentsByPeriod(
+    public ResponseEntity <List<AppointmentResponseDTO>> listAppointmentsByPeriod(
                                                         @PageableDefault(size = 30) Pageable pageable,
 
                                                         @Parameter(description = "Usuario manda a primeira data do periodo",
@@ -82,7 +82,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200", description = "Consultas agendadas do Paciente listadas com sucesso"),
             @ApiResponse(responseCode = "404", description = "Paciente não encontrado")
     })
-    public ResponseEntity<List<AppointmentResponseDTO>> listPatientScheduledAppointments (
+    public ResponseEntity <List<AppointmentResponseDTO>> listPatientScheduledAppointments (
                                                         @PageableDefault(size = 5) Pageable pageable,
 
                                                         @Parameter(description = "Usuario manda o ID do Paciente no path da requisição",
@@ -97,7 +97,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200", description = "Histórico de consultas do Paciente listado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Paciente não encontrado")
     })
-    public ResponseEntity<List<AppointmentResponseDTO>> listPatientAppointmentsHistory (
+    public ResponseEntity <List<AppointmentResponseDTO>> listPatientAppointmentsHistory (
                                                         @PageableDefault(size = 5) Pageable pageable,
 
                                                         @Parameter(description = "Usuario manda o ID do Paciente no path da requisição",
@@ -112,7 +112,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200", description = "Consultas agendadas do Médico listadas com sucesso"),
             @ApiResponse(responseCode = "404", description = "Médico não encontrado")
     })
-    public ResponseEntity<List<AppointmentResponseDTO>> listDoctorScheduledAppointments (
+    public ResponseEntity <List<AppointmentResponseDTO>> listDoctorScheduledAppointments (
                                                         @PageableDefault(size = 5) Pageable pageable,
 
                                                         @Parameter(description = "Usuario manda o ID do Médico no path da requisição",

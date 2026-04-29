@@ -72,7 +72,7 @@ public class PatientController {
     @PatchMapping("/{patientId}/deactivate")
     @Operation(summary = "Desativar Paciente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Paciente desativado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Paciente desativado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Paciente não encontrado"),
             @ApiResponse(responseCode = "409", description = "Paciente ja esta desativado")
     })
@@ -80,6 +80,6 @@ public class PatientController {
                                 @Parameter(description = "Usuario manda o ID do Paciente no path da requisição")
                                 @PathVariable Long patientId) {
         patientService.softDelete(patientId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.noContent().build();
     }
 }

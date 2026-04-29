@@ -33,7 +33,7 @@ public class DoctorController {
             @ApiResponse(responseCode = "201", description = "Médico cadastrado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Erro ao cadastrar Médico, Dados invalidos na requisição")
     })
-    public ResponseEntity<DoctorResponseDTO> createDoctor (
+    public ResponseEntity <DoctorResponseDTO> createDoctor (
                                              @io.swagger.v3.oas.annotations.parameters.RequestBody
                                              (description = "Usuario manda os dados do Médico a ser criado",
                                               required = true)
@@ -47,7 +47,7 @@ public class DoctorController {
             @ApiResponse(responseCode = "200", description = "Listagem por especialidade efetuada"),
             @ApiResponse(responseCode = "400", description = "Especialidade invalida")
     })
-    public ResponseEntity<List<DoctorResponseDTO>> listBySpecialty (
+    public ResponseEntity <List<DoctorResponseDTO>> listBySpecialty (
                                                    @Parameter(description = "Usuario seleciona especialidade do Médico",
                                                    required = true)
                                                    @RequestParam DoctorSpecialty specialty,
@@ -58,7 +58,7 @@ public class DoctorController {
     @PatchMapping("/{doctorId}/deactivate")
     @Operation(summary = "Desativar Médico")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Médico desativado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Médico desativado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Médico não encontrado"),
             @ApiResponse(responseCode = "409", description = "Médico ja está desativado")
     })
@@ -67,6 +67,6 @@ public class DoctorController {
                                 required = true)
                                 @PathVariable Long doctorId) {
         doctorService.softDelete(doctorId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.noContent().build();
     }
 }

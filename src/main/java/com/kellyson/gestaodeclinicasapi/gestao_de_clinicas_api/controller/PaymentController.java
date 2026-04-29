@@ -50,7 +50,7 @@ public class PaymentController {
             @ApiResponse(responseCode = "404",description = "Consulta ou pagamento não encontrado"),
             @ApiResponse(responseCode = "409", description = "Conflito na regra de negócio (Tentativa de refazer pagamento inválida)")
     })
-    public ResponseEntity<PaymentResponseDTO> retryPayment (
+    public ResponseEntity <PaymentResponseDTO> retryPayment (
                                               @Parameter(description = "Usuario envia o ID do pagamento no path da requisição",
                                               required = true)
                                               @PathVariable Long paymentId,
@@ -64,13 +64,13 @@ public class PaymentController {
     @PatchMapping("/{paymentId}/confirm")
     @Operation(summary = "Confirmar Pagamento", description = "Confirmar pagamento que ficou pendente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Pagamento confirmado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Pagamento confirmado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Pagamento não encontrado"),
             @ApiResponse(responseCode = "409", description = "Conflito na regra de negócio (Tentativa de confirmar pagamento inválida)")
     })
     public ResponseEntity<Void> confirmPayment (@PathVariable Long paymentId) {
         paymentService.confirmPayment(paymentId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/pending/patients")
