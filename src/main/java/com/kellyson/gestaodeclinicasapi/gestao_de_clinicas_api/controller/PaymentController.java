@@ -28,6 +28,12 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.registerPayment(paymentRequestDTO));
     }
 
+    @PatchMapping("/retry/{paymentId}")
+    public ResponseEntity<PaymentResponseDTO> retryPayment (@PathVariable Long paymentId,
+                                                            @Valid @RequestBody PaymentRequestDTO paymentRequestDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(paymentService.retryPayment(paymentId,paymentRequestDTO));
+    }
+
     @PostMapping("/{paymentId}")
     public ResponseEntity<Void> confirmPayment (@PathVariable Long paymentId) {
         paymentService.confirmPayment(paymentId);

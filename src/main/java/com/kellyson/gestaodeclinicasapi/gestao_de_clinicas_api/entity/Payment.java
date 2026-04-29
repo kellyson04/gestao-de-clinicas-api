@@ -19,8 +19,8 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "appointment_id",nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "appointment_id",nullable = false,unique = true)
     private Appointment appointment;
 
     @Column(precision = 10,scale = 2,nullable = false)

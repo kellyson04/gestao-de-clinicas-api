@@ -14,6 +14,7 @@ import java.util.List;
 
 public interface PaymentRepository extends JpaRepository<Payment,Long> {
     boolean existsByAppointmentIdAndStatus (Long appointmentId,PaymentStatus status);
+    boolean existsByIdAndAppointmentIdAndStatus(Long paymentId,Long appointmentId,PaymentStatus status);
 
     @Query("""
         SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PendingPaymentPatientResponseDTO(
@@ -29,4 +30,5 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
         GROUP BY pat.id,pat.name
         """)
     Page<PendingPaymentPatientResponseDTO> listPatientsWithPendingPayment (Pageable pageable);
+
 }
