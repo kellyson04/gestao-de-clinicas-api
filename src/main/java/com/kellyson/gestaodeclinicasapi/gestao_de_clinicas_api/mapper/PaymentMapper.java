@@ -10,7 +10,9 @@ public class PaymentMapper {
 
     public static PaymentResponseDTO mapToResponse (Payment payment) {
         PaymentResponseDTO paymentResponseDTO = PaymentResponseDTO.builder()
-                .appointment(payment.getAppointment())
+                .appointmentId(payment.getAppointment().getId())
+                .patientName(payment.getAppointment().getPatient().getName())
+                .doctorName(payment.getAppointment().getDoctor().getName())
                 .amount(payment.getAmount())
                 .status(PaymentStatus.PENDING)
                 .build();
