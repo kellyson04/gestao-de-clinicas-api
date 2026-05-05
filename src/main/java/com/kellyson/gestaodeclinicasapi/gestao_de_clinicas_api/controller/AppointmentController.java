@@ -148,4 +148,18 @@ public class AppointmentController {
     public ResponseEntity <List<TopDoctorByDoneAppointmentsResponseDTO>> findTop10DoctorsByDoneAppointments (Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(appointmentService.findTop10DoctorsByDoneAppointments(pageable));
     }
+
+    @PatchMapping("/{appointmentId}/complete")
+    @Operation(summary = "Muda status de consulta SCHEDULED para DONE")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Consulta realizada com sucesso"),
+            @ApiResponse(responseCode = "404",description = "Consulta não encontrada"),
+            @ApiResponse(responseCode = "409",description = "Consulta ja se encontra com status DONE, ou se encontra CANCELADA")
+    })
+    public ResponseEntity <AppointmentResponseDTO> completeAppointment (
+                                                    @Parameter(description = "Usuario manda o ID da Consulta no path da requisição" )
+                                                    @PathVariable Long appointmentId) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(appointmentService.completeAppointment(appointmentId));
+    }
 }
