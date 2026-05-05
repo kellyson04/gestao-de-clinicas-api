@@ -134,4 +134,21 @@ public class AppointmentService {
 
         return appointmentRepository.findTop10DoctorsByDoneAppointments(PageRequest.of(0,10));
     }
+
+    @Transactional
+    public AppointmentResponseDTO completeAppointment (Long appointmentId) {
+        Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(() -> new AppointmentNotFoundException("Consulta não encontrada"));
+
+        if (appointment.getStatus().equals(AppointmentStatus.CANCELED)) {
+            throw new ConflictException("Consulta se encontra cancelada");
+        }
+
+        if (appointment.getStatus().equals(AppointmentStatus.DONE)) {
+            throw new ConflictException("Consulta ja se encontra feita!");
+        }
+
+        appointment.setStatus(AppointmentStatus.DONE);
+
+        return AppointmentMapper.mapToResponse(appointment);
+    }
 }
