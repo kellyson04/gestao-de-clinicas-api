@@ -1,6 +1,7 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PendingPaymentPatientResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.Top5DoctorsByRevenueResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Payment;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.AppointmentStatus;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.PaymentStatus;
@@ -31,4 +32,17 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
         """)
     Page<PendingPaymentPatientResponseDTO> listPatientsWithPendingPayment (Pageable pageable);
 
+    @Query("""
+           SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.Top5DoctorsByRevenueResponseDTO(
+                  doc.id,
+                  doc.name,
+                  SUM(pay.amount)) 
+           FROM Payment pay
+           JOIN pay.appointment app
+           JOIN app.doctor doc
+           WHERE pay.status = 'PAID'
+           GROUP BY doc.id,doc.name
+           ORDER BY SUM(pay.amount) DESC                    
+           """)
+    List<Top5DoctorsByRevenueResponseDTO> findTop5DoctorsByRevenue (Pageable pageable);
 }
