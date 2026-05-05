@@ -2,6 +2,7 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.AppointmentRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.AppointmentResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.TopDoctorByDoneAppointmentsResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Appointment;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Patient;
@@ -12,6 +13,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.Appoin
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PatientRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -125,5 +127,11 @@ public class AppointmentService {
                 .stream()
                 .map(appointment -> AppointmentMapper.mapToResponse(appointment))
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<TopDoctorByDoneAppointmentsResponseDTO> findTop10DoctorsByDoneAppointments (Pageable pageable) {
+
+        return appointmentRepository.findTop10DoctorsByDoneAppointments(PageRequest.of(0,10));
     }
 }
