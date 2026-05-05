@@ -25,6 +25,10 @@ public class PatientService {
 
     public PatientResponseDTO createPatient (PatientRequestDTO patientRequestDTO) {
 
+        if (patientRepository.existsByCpf(patientRequestDTO.cpf())) {
+            throw new ConflictException("CPF Ja em uso");
+        }
+
         Patient patient = Patient.builder()
                 .name(patientRequestDTO.name())
                 .cpf(patientRequestDTO.cpf())
