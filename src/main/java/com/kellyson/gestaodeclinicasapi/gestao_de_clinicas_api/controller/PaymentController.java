@@ -3,6 +3,7 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.PaymentRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PaymentResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PendingPaymentPatientResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.Top5DoctorsByRevenueResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -82,5 +83,15 @@ public class PaymentController {
                                                                     @PageableDefault(size = 10)
                                                                     Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(paymentService.patientsWithPendingPayments(pageable));
+    }
+
+    @GetMapping("/reports/top-5-doctors-by-revenue")
+    @Operation(description = "Lista os 5 Médicos mais bem pagos da clinica")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Listagem dos 5 Médicos mais bem pagos efetuada com sucesso"),
+            @ApiResponse(responseCode = "400",description = "Erro ao Listar Top 5 Médicos com maior pagamento, Dados invalidos na requisição")
+    })
+    public ResponseEntity<List<Top5DoctorsByRevenueResponseDTO>> findTop5DoctorsByRevenue (Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(paymentService.findTop5DoctorsByRevenue(pageable));
     }
 }
