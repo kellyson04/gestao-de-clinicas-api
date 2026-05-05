@@ -2,12 +2,14 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.AppointmentRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.AppointmentResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.TopDoctorByDoneAppointmentsResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.AppointmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -134,5 +136,16 @@ public class AppointmentController {
                                                                     required = true)
                                                          @PathVariable Long doctorId) {
         return ResponseEntity.status(HttpStatus.OK).body(appointmentService.listDoctorAppointmentsHistory(doctorId, pageable));
+    }
+
+
+    @GetMapping("/top-10-doctors")
+    @Operation(summary = "Lista 10 médicos com mais consultas da clinica")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Médicos listados com sucesso"),
+            @ApiResponse(responseCode = "400",description = "Erro ao Listar Top 10 Médicos, Dados invalidos na requisição")
+    })
+    public ResponseEntity <List<TopDoctorByDoneAppointmentsResponseDTO>> findTop10DoctorsByDoneAppointments (Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(appointmentService.findTop10DoctorsByDoneAppointments(pageable));
     }
 }
