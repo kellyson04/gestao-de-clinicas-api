@@ -1,5 +1,6 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository;
 
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.TopDoctorByDoneAppointmentsResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Appointment;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Patient;
@@ -34,4 +35,16 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
     Page<Appointment> findByPatient(Patient patient, Pageable pageable);
     Page<Appointment> findByDoctorAndStatus (Doctor doctor,AppointmentStatus status, Pageable pageable);
     Page<Appointment> findByDoctor(Doctor doctor, Pageable pageable);
+    @Query("""
+          SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.TopDoctorByDoneAppointmentsResponseDTO(
+            doc.id,
+            doc.name,
+            COUNT(app.id))
+          FROM Appointment app
+          JOIN app.doctor doc
+          WHERE app.status = 'DONE'
+          GROUP BY doc.id,doc.name
+          ORDER BY COUNT(app.id) DESC           
+          """)
+    List<TopDoctorByDoneAppointmentsResponseDTO> findTop10DoctorsByDoneAppointments (Pageable pageable);
 }
