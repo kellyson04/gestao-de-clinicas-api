@@ -2,7 +2,8 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.AppointmentRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.AppointmentResponseDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.TopDoctorByDoneAppointmentsResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.DoctorsWithoutCanceledAppointmentsResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.TopDoctorsByDoneAppointmentsResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Appointment;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Patient;
@@ -130,7 +131,7 @@ public class AppointmentService {
     }
 
     @Transactional(readOnly = true)
-    public List<TopDoctorByDoneAppointmentsResponseDTO> findTop10DoctorsByDoneAppointments (Pageable pageable) {
+    public List<TopDoctorsByDoneAppointmentsResponseDTO> findTop10DoctorsByDoneAppointments (Pageable pageable) {
 
         return appointmentRepository.findTop10DoctorsByDoneAppointments(PageRequest.of(0,10));
     }
@@ -150,5 +151,10 @@ public class AppointmentService {
         appointment.setStatus(AppointmentStatus.DONE);
 
         return AppointmentMapper.mapToResponse(appointment);
+    }
+
+    @Transactional(readOnly = true)
+    public List<DoctorsWithoutCanceledAppointmentsResponseDTO> doctorsWithoutCanceledAppointments () {
+        return appointmentRepository.doctorsWithoutCanceledAppointments();
     }
 }
