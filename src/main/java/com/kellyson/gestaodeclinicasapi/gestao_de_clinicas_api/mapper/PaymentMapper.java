@@ -14,7 +14,7 @@ public class PaymentMapper {
                 .patientName(payment.getAppointment().getPatient().getName())
                 .doctorName(payment.getAppointment().getDoctor().getName())
                 .amount(payment.getAmount())
-                .status(PaymentStatus.PENDING)
+                .status(payment.getStatus())
                 .build();
 
         return paymentResponseDTO;

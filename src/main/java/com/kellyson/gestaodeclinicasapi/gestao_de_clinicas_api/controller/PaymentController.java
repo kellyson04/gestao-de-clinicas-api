@@ -43,6 +43,7 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.registerPayment(paymentRequestDTO));
     }
 
+
     @PatchMapping("/{paymentId}/retry")
     @Operation(summary = "Refazer Pagamento Cancelado",
                description = "Refaz o Pagamento pra consulta caso o antigo tenha status CANCELED")
@@ -62,6 +63,7 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.OK).body(paymentService.retryPayment(paymentId,paymentRequestDTO));
     }
 
+
     @PatchMapping("/{paymentId}/confirm")
     @Operation(summary = "Confirmar Pagamento", description = "Confirmar pagamento que ficou pendente")
     @ApiResponses(value = {
@@ -74,6 +76,7 @@ public class PaymentController {
         return ResponseEntity.noContent().build();
     }
 
+
     @GetMapping("/pending/patients")
     @Operation(summary = "Listar Pacientes com Pagamentos Pendentes")
     @ApiResponses(value = {
@@ -85,13 +88,28 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.OK).body(paymentService.patientsWithPendingPayments(pageable));
     }
 
+
     @GetMapping("/reports/top-5-doctors-by-revenue")
-    @Operation(description = "Lista os 5 Médicos mais bem pagos da clinica")
+    @Operation(summary = "Lista os 5 Médicos mais bem pagos da clinica")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Listagem dos 5 Médicos mais bem pagos efetuada com sucesso"),
             @ApiResponse(responseCode = "400",description = "Erro ao Listar Top 5 Médicos com maior pagamento, Dados invalidos na requisição")
     })
     public ResponseEntity<List<Top5DoctorsByRevenueResponseDTO>> findTop5DoctorsByRevenue (Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(paymentService.findTop5DoctorsByRevenue(pageable));
+    }
+
+
+    @PatchMapping("/{paymentId}/cancel")
+    @Operation(summary = "Cancela pagamento")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Pagamento cancelado com sucesso"),
+            @ApiResponse(responseCode = "404",description = "Pagamento não encontrado"),
+            @ApiResponse(responseCode = "409",description = "Pagamento ja se encontra cancelado")
+    })
+    public ResponseEntity<PaymentResponseDTO> cancelPayment (
+                                                @Parameter(description = "Usuario envia o ID do pagamento no path da requisição")
+                                                @PathVariable Long paymentId) {
+        return ResponseEntity.status(HttpStatus.OK).body(paymentService.cancelPayment(paymentId));
     }
 }
