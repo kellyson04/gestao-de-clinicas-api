@@ -1,6 +1,8 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository;
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.TopDoctorByDoneAppointmentsResponseDTO;
+
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.DoctorsWithoutCanceledAppointmentsResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.TopDoctorsByDoneAppointmentsResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Appointment;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Patient;
@@ -14,7 +16,6 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
@@ -36,7 +37,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
     Page<Appointment> findByDoctorAndStatus (Doctor doctor,AppointmentStatus status, Pageable pageable);
     Page<Appointment> findByDoctor(Doctor doctor, Pageable pageable);
     @Query("""
-          SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.TopDoctorByDoneAppointmentsResponseDTO(
+          SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.TopDoctorsByDoneAppointmentsResponseDTO(
             doc.id,
             doc.name,
             COUNT(app.id))
@@ -46,5 +47,20 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
           GROUP BY doc.id,doc.name
           ORDER BY COUNT(app.id) DESC           
           """)
-    List<TopDoctorByDoneAppointmentsResponseDTO> findTop10DoctorsByDoneAppointments (Pageable pageable);
+    List<TopDoctorsByDoneAppointmentsResponseDTO> findTop10DoctorsByDoneAppointments (Pageable pageable);
+    @Query("""
+            SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.DoctorsWithoutCanceledAppointmentsResponseDTO(
+               doc.id,
+               doc.name,
+               COUNT(app.id))
+            FROM Appointment app
+            JOIN app.doctor doc
+            WHERE doc.id NOT IN (
+                        SELECT doctor.id
+                        FROM Appointment
+                        WHERE status = 'CANCELED'
+                        )     
+            GROUP BY doc.id,doc.name
+            """)
+    List<DoctorsWithoutCanceledAppointmentsResponseDTO> doctorsWithoutCanceledAppointments ();
 }
