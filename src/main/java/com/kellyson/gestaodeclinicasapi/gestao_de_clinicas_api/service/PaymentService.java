@@ -116,4 +116,17 @@ public class PaymentService {
     public List<Top5DoctorsByRevenueResponseDTO> findTop5DoctorsByRevenue (Pageable pageable) {
         return paymentRepository.findTop5DoctorsByRevenue(PageRequest.of(0,5));
     }
+
+    @Transactional
+    public PaymentResponseDTO cancelPayment (Long paymentId) {
+        Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new PaymentNotFoundException("Pagamento não encontrado"));
+
+        if (payment.getStatus().equals(PaymentStatus.CANCELED)) {
+            throw new ConflictException("Pagamento ja se encontra cancelado");
+        }
+
+        payment.setStatus(PaymentStatus.CANCELED);
+
+        return PaymentMapper.mapToResponse(payment);
+    }
 }
