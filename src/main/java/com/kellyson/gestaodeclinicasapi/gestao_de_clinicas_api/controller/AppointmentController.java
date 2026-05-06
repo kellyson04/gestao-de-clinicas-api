@@ -2,14 +2,14 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.AppointmentRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.AppointmentResponseDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.TopDoctorByDoneAppointmentsResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.DoctorsWithoutCanceledAppointmentsResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.TopDoctorsByDoneAppointmentsResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.AppointmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -145,7 +145,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "200",description = "Médicos listados com sucesso"),
             @ApiResponse(responseCode = "400",description = "Erro ao Listar Top 10 Médicos, Dados invalidos na requisição")
     })
-    public ResponseEntity <List<TopDoctorByDoneAppointmentsResponseDTO>> findTop10DoctorsByDoneAppointments (Pageable pageable) {
+    public ResponseEntity <List<TopDoctorsByDoneAppointmentsResponseDTO>> findTop10DoctorsByDoneAppointments (Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(appointmentService.findTop10DoctorsByDoneAppointments(pageable));
     }
 
@@ -161,5 +161,15 @@ public class AppointmentController {
                                                     @PathVariable Long appointmentId) {
 
         return ResponseEntity.status(HttpStatus.OK).body(appointmentService.completeAppointment(appointmentId));
+    }
+
+    @GetMapping("/doctors/without-canceled-appointments")
+    @Operation(summary = "Lista Médicos que nunca tiveram consulta cancelada")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Listagem dos Médicos efetuada com sucesso"),
+            @ApiResponse(responseCode = "400",description = "Erro ao Listar Médicos sem consulta cancelada, Dados invalidos na requisição"),
+    })
+    public ResponseEntity<List<DoctorsWithoutCanceledAppointmentsResponseDTO>> doctorsWithoutCanceledAppointments () {
+        return ResponseEntity.status(HttpStatus.OK).body(appointmentService.doctorsWithoutCanceledAppointments());
     }
 }
