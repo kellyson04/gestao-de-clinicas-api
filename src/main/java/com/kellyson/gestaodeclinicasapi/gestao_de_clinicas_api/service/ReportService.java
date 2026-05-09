@@ -1,10 +1,11 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service;
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.DoctorsWithoutCanceledAppointmentsResponseDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PendingPaymentPatientResponseDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.Top5DoctorsByRevenueResponseDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.TopDoctorsByDoneAppointmentsResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.*;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.AppointmentStatus;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.DoctorNotFoundException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.AppointmentRepository;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PaymentRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +19,12 @@ public class ReportService {
 
     private final AppointmentRepository appointmentRepository;
     private final PaymentRepository paymentRepository;
+    private final DoctorRepository doctorRepository;
 
-    public ReportService(AppointmentRepository appointmentRepository, PaymentRepository paymentRepository) {
+    public ReportService(AppointmentRepository appointmentRepository, PaymentRepository paymentRepository,DoctorRepository doctorRepository) {
         this.appointmentRepository = appointmentRepository;
         this.paymentRepository = paymentRepository;
+        this.doctorRepository = doctorRepository;
     }
 
     @Transactional(readOnly = true)
@@ -44,5 +47,12 @@ public class ReportService {
     @Transactional(readOnly = true)
     public List<Top5DoctorsByRevenueResponseDTO> findTop5DoctorsByRevenue (Pageable pageable) {
         return paymentRepository.findTop5DoctorsByRevenue(PageRequest.of(0,5));
+    }
+
+    @Transactional(readOnly = true)
+    public List<DoctorFuture30AppointmentsDTO> doctorFuture30Appointments (Long doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado"));
+
+       return appointmentRepository.findDoctorFuture30Appointments(doctorId,PageRequest.of(0,30));
     }
 }
