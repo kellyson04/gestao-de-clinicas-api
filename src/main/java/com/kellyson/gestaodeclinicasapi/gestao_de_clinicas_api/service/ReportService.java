@@ -1,7 +1,9 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service;
 
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.DoctorsWithoutCanceledAppointmentsResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PendingPaymentPatientResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.Top5DoctorsByRevenueResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.TopDoctorsByDoneAppointmentsResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.AppointmentRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PaymentRepository;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +22,17 @@ public class ReportService {
     public ReportService(AppointmentRepository appointmentRepository, PaymentRepository paymentRepository) {
         this.appointmentRepository = appointmentRepository;
         this.paymentRepository = paymentRepository;
+    }
+
+    @Transactional(readOnly = true)
+    public List<TopDoctorsByDoneAppointmentsResponseDTO> findTop10DoctorsByDoneAppointments (Pageable pageable) {
+
+        return appointmentRepository.findTop10DoctorsByDoneAppointments(PageRequest.of(0,10));
+    }
+
+    @Transactional(readOnly = true)
+    public List<DoctorsWithoutCanceledAppointmentsResponseDTO> doctorsWithoutCanceledAppointments () {
+        return appointmentRepository.doctorsWithoutCanceledAppointments();
     }
 
     @Transactional(readOnly = true)
