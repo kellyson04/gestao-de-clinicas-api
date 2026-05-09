@@ -130,11 +130,6 @@ public class AppointmentService {
                 .toList();
     }
 
-    @Transactional(readOnly = true)
-    public List<TopDoctorsByDoneAppointmentsResponseDTO> findTop10DoctorsByDoneAppointments (Pageable pageable) {
-
-        return appointmentRepository.findTop10DoctorsByDoneAppointments(PageRequest.of(0,10));
-    }
 
     @Transactional
     public AppointmentResponseDTO completeAppointment (Long appointmentId) {
@@ -151,10 +146,5 @@ public class AppointmentService {
         appointment.setStatus(AppointmentStatus.DONE);
 
         return AppointmentMapper.mapToResponse(appointment);
-    }
-
-    @Transactional(readOnly = true)
-    public List<DoctorsWithoutCanceledAppointmentsResponseDTO> doctorsWithoutCanceledAppointments () {
-        return appointmentRepository.doctorsWithoutCanceledAppointments();
     }
 }

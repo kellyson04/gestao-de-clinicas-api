@@ -139,16 +139,6 @@ public class AppointmentController {
     }
 
 
-    @GetMapping("/top-10-doctors")
-    @Operation(summary = "Lista 10 médicos com mais consultas da clinica")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",description = "Médicos listados com sucesso"),
-            @ApiResponse(responseCode = "400",description = "Erro ao Listar Top 10 Médicos, Dados invalidos na requisição")
-    })
-    public ResponseEntity <List<TopDoctorsByDoneAppointmentsResponseDTO>> findTop10DoctorsByDoneAppointments (Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(appointmentService.findTop10DoctorsByDoneAppointments(pageable));
-    }
-
     @PatchMapping("/{appointmentId}/complete")
     @Operation(summary = "Muda status de consulta SCHEDULED para DONE")
     @ApiResponses(value = {
@@ -163,13 +153,4 @@ public class AppointmentController {
         return ResponseEntity.status(HttpStatus.OK).body(appointmentService.completeAppointment(appointmentId));
     }
 
-    @GetMapping("/doctors/without-canceled-appointments")
-    @Operation(summary = "Lista Médicos que nunca tiveram consulta cancelada")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",description = "Listagem dos Médicos efetuada com sucesso"),
-            @ApiResponse(responseCode = "400",description = "Erro ao Listar Médicos sem consulta cancelada, Dados invalidos na requisição"),
-    })
-    public ResponseEntity<List<DoctorsWithoutCanceledAppointmentsResponseDTO>> doctorsWithoutCanceledAppointments () {
-        return ResponseEntity.status(HttpStatus.OK).body(appointmentService.doctorsWithoutCanceledAppointments());
-    }
 }
