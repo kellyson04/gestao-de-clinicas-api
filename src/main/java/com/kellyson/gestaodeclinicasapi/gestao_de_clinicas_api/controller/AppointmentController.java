@@ -2,8 +2,6 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.AppointmentRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.AppointmentResponseDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.DoctorsWithoutCanceledAppointmentsResponseDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.TopDoctorsByDoneAppointmentsResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.AppointmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
