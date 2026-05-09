@@ -1,15 +1,13 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository;
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PendingPaymentPatientResponseDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.Top5DoctorsByRevenueResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.PendingPaymentPatientResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.Top5DoctorsByRevenueResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Payment;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.AppointmentStatus;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.PaymentStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -18,7 +16,7 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
     boolean existsByIdAndAppointmentIdAndStatus(Long paymentId,Long appointmentId,PaymentStatus status);
 
     @Query("""
-        SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PendingPaymentPatientResponseDTO(
+        SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.PendingPaymentPatientResponseDTO(
                 pat.id,
                 pat.name,
                 COUNT(pay.id),
@@ -33,7 +31,7 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
     Page<PendingPaymentPatientResponseDTO> listPatientsWithPendingPayment (Pageable pageable);
 
     @Query("""
-           SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.Top5DoctorsByRevenueResponseDTO(
+           SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.Top5DoctorsByRevenueResponseDTO(
                   doc.id,
                   doc.name,
                   SUM(pay.amount)) 
