@@ -106,16 +106,6 @@ public class PaymentService {
         payment.setStatus(PaymentStatus.PAID);
     }
 
-    @Transactional(readOnly = true)
-    public List <PendingPaymentPatientResponseDTO> patientsWithPendingPayments (Pageable pageable) {
-        return paymentRepository.listPatientsWithPendingPayment(pageable)
-                .getContent();
-    }
-
-    @Transactional(readOnly = true)
-    public List<Top5DoctorsByRevenueResponseDTO> findTop5DoctorsByRevenue (Pageable pageable) {
-        return paymentRepository.findTop5DoctorsByRevenue(PageRequest.of(0,5));
-    }
 
     @Transactional
     public PaymentResponseDTO cancelPayment (Long paymentId) {
