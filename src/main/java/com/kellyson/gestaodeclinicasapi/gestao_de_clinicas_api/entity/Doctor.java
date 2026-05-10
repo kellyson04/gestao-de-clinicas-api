@@ -4,6 +4,8 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.DoctorSpeci
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "doctors")
 @NoArgsConstructor
@@ -23,6 +25,15 @@ public class Doctor {
     @Column(nullable = false,length = 100)
     @Enumerated(EnumType.STRING)
     private DoctorSpecialty specialty;
+
+    @Column(name = "crm_number", nullable = false,length = 11)
+    private String crmNumber;
+
+    @Column(name = "crm_uf", nullable = false,length = 2)
+    private String crmUf;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
     @Column(name = "is_active",nullable = false)
     private Boolean isActive = true;
