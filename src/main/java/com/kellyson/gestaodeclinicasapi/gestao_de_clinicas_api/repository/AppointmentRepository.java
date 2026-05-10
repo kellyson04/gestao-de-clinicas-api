@@ -3,6 +3,7 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorFuture30AppointmentsDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorsWithoutCanceledAppointmentsResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TodayAppointmentsDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TopDoctorsByDoneAppointmentsResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Appointment;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
@@ -79,4 +80,21 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
             """)
     List<DoctorFuture30AppointmentsDTO> findDoctorFuture30Appointments(@Param("doctorId") Long doctorId,
                                                                        Pageable pageable);
+
+    @Query("""
+        SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TodayAppointmentsDTO(
+                doc.id,
+                doc.name,
+                pat.id,
+                pat.name,
+                app.dateTime)
+        FROM Appointment app
+        JOIN app.patient pat
+        JOIN app.doctor doc
+        WHERE app.dateTime >= :startOfDay
+        AND app.dateTime <= :endOfDay
+        AND app.status = 'SCHEDULED'    
+        ORDER BY app.dateTime ASC
+            """)
+    List<TodayAppointmentsDTO> findTodayAppointments (@Param("startOfDay") LocalDateTime start, @Param("endOfDay") LocalDateTime end,Pageable pageable);
 }
