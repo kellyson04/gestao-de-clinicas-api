@@ -33,4 +33,7 @@ public class Appointment {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AppointmentStatus status;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 }
