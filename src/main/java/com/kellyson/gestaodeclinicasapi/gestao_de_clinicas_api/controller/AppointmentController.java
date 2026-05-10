@@ -2,6 +2,7 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.AppointmentRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.AppointmentResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TodayAppointmentsDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.AppointmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -151,4 +152,15 @@ public class AppointmentController {
         return ResponseEntity.status(HttpStatus.OK).body(appointmentService.completeAppointment(appointmentId));
     }
 
+
+    @GetMapping("/today")
+    @Operation(summary = "Listar consultas do dia")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listagem de consultas do dia efetuada"),
+            @ApiResponse(responseCode = "400", description = "Parâmetros de paginação inválidos")
+    })
+    public ResponseEntity<List<TodayAppointmentsDTO>> todayScheduledAppointments (@PageableDefault(size = 10) Pageable pageable) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(appointmentService.todayAppointments(pageable));
+    }
 }
