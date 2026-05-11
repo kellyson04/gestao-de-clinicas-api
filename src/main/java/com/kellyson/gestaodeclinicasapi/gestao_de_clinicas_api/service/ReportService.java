@@ -9,10 +9,16 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.Doctor
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PaymentRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReportService {
@@ -54,5 +60,12 @@ public class ReportService {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado"));
 
        return appointmentRepository.findDoctorFuture30Appointments(doctorId,PageRequest.of(0,30));
+    }
+
+    public ClinicProfitByYearDTO getClinicProfitByYear (Integer year) {
+        LocalDateTime startOfYear = LocalDate.of(year,1,1).atStartOfDay();
+        LocalDateTime endOfYear = LocalDate.of(year + 1,1,1).atStartOfDay();
+
+       return paymentRepository.findClinicProfitByYear(startOfYear,endOfYear);
     }
 }
