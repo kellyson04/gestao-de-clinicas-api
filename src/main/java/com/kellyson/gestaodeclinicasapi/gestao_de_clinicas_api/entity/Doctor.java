@@ -26,7 +26,7 @@ public class Doctor {
     @Enumerated(EnumType.STRING)
     private DoctorSpecialty specialty;
 
-    @Column(name = "crm_number", nullable = false,length = 11)
+    @Column(name = "crm_number",unique = true, nullable = false,length = 11)
     private String crmNumber;
 
     @Column(name = "crm_uf", nullable = false,length = 2)
