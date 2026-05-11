@@ -1,21 +1,22 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.ErrorResponse;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.*;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.ReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/clinica/reports")
@@ -82,5 +83,18 @@ public class ReportController {
     })
     public ResponseEntity <List<Top5DoctorsByRevenueResponseDTO>> findTop5DoctorsByRevenue (Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(reportService.findTop5DoctorsByRevenue(pageable));
+    }
+
+    @GetMapping("/clinic/annual-profit")
+    @Operation(summary = "Mostra faturamento total da clinica no ano e lucro obtido")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Faturamento anual e Lucro apresentados com sucesso"),
+            @ApiResponse(responseCode = "400",description = "Ano invalido informado na requisição",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    public ResponseEntity <ClinicProfitByYearDTO> getClinicProfitByYear (
+                                                                         @Parameter(description = "Ano usado para calcular o faturamento e lucro da clinica", example = "2026")
+                                                                         @RequestParam Integer year) {
+        return ResponseEntity.status(HttpStatus.OK).body(reportService.getClinicProfitByYear(year));
     }
 }
