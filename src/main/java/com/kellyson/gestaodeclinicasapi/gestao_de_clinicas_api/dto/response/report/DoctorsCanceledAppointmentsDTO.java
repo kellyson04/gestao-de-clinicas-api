@@ -2,9 +2,9 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.rep
 
 import java.math.BigDecimal;
 
-public record DoctorsCanceledAppointments(
+public record DoctorsCanceledAppointmentsDTO(
         Long doctorId,
         String doctorName,
-        BigDecimal canceled_appointments
+        Long canceled_appointments
 ) {
 }
