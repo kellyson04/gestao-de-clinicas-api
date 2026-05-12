@@ -68,4 +68,9 @@ public class ReportService {
 
        return paymentRepository.findClinicProfitByYear(startOfYear,endOfYear);
     }
+
+    public List<DoctorsCanceledAppointmentsDTO> doctorsWithMostCanceledAppointments () {
+
+        return appointmentRepository.findDoctorsWithHighestCanceledAppointments(PageRequest.of(0,50));
+    }
 }
