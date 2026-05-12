@@ -125,4 +125,17 @@ public class ReportController {
         return ResponseEntity.status(HttpStatus.OK)
                .body(reportService.getClinicProfitByYear(year));
     }
+
+    @GetMapping("/doctors/canceled-appointments")
+    @Operation(summary = "Lista os 50 Médicos com maior número de consultas canceladas")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Listagem dos 50 médicos efetuada com sucesso")
+            })
+    public ResponseEntity <List<DoctorsCanceledAppointmentsDTO>> listDoctorsWithMostCanceledAppointments () {
+
+        return ResponseEntity.status(HttpStatus.OK)
+               .body(reportService.doctorsWithMostCanceledAppointments());
+    }
 }
