@@ -1,15 +1,13 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository;
 
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorFuture30AppointmentsDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorsWithoutCanceledAppointmentsResponseDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TodayAppointmentsDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TopDoctorsByDoneAppointmentsResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.*;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Appointment;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Patient;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.AppointmentStatus;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -97,4 +95,17 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
         ORDER BY app.dateTime ASC
             """)
     List<TodayAppointmentsDTO> findTodayAppointments (@Param("startOfDay") LocalDateTime start, @Param("endOfDay") LocalDateTime end,Pageable pageable);
+
+    @Query("""
+           SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorsCanceledAppointmentsDTO(
+                      doc.id,
+                      doc.name,
+                      COUNT(app.id))
+           FROM Appointment app
+           JOIN app.doctor doc
+           WHERE app.status = 'CANCELED'
+           GROUP BY doc.id,doc.name
+           ORDER BY COUNT(app.id) DESC           
+           """)
+    List<DoctorsCanceledAppointmentsDTO> findDoctorsWithHighestCanceledAppointments (Pageable pageable);
 }
