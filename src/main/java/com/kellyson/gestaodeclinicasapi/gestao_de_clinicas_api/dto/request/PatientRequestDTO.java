@@ -1,18 +1,20 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
 public record PatientRequestDTO(
-        @NotBlank
+        @NotBlank(message = "O nome é obrigatório")
+        @Size(max = 100,message = "O nome do Paciente deve ter no maximo 100 caracteres")
         String name,
-        @NotBlank
+
+        @NotBlank(message = "O CPF é obrigatório")
         @Pattern(regexp = "\\d{11}",message = "O CPF deve conter 11 números")
         String cpf,
-        @NotNull
+
+        @NotNull(message = "A data de nascimento é obrigatória")
+        @Past(message = "A data de nascimento deve estar no passado")
         LocalDate birthDate
 ) {
 }
