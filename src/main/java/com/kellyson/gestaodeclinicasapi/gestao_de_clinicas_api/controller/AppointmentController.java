@@ -1,16 +1,11 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.doc.AppointmentControllerDoc;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.AppointmentRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.AppointmentResponseDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.ErrorResponse;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TodayAppointmentsDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.AppointmentService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,11 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/clinica/appointments")
-public class AppointmentController {
+public class AppointmentController implements AppointmentControllerDoc {
 
     private final AppointmentService appointmentService;
 
@@ -32,212 +26,96 @@ public class AppointmentController {
         this.appointmentService = appointmentService;
     }
 
+    @Override
     @PostMapping
-    @Operation(summary = "Agendar consulta", description = "Agenda uma Consulta no sistema")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Consulta agendada com sucesso"),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Erro ao agendar Consulta, Dados invalidos na requisição",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Paciente ou Médico não encontrado",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "Conflito na regra de negócio da Consulta",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     public ResponseEntity<AppointmentResponseDTO> scheduleAppointment (
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Usuario manda os dados da Consulta a ser agendada",
-                    required = true) @Valid @RequestBody AppointmentRequestDTO appointmentRequestDTO) {
+            @Valid @RequestBody AppointmentRequestDTO appointmentRequestDTO) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(appointmentService.scheduleAppointment(appointmentRequestDTO));
     }
 
+    @Override
     @PatchMapping("/{appointmentId}/cancel")
-    @Operation(summary = "Cancelar consulta")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Consulta cancelada com sucesso",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Consulta não encontrada",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "Consulta ja está cancelada ou não pode ser cancelada",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     public ResponseEntity <AppointmentResponseDTO> cancelAppointment (
-            @Parameter(description = "Usuario manda o ID da Consulta no path da requisição", required = true)
-
             @PathVariable Long appointmentId) {
 
         return ResponseEntity.status(HttpStatus.OK)
-               .body(appointmentService.cancelAppointment(appointmentId));
+                .body(appointmentService.cancelAppointment(appointmentId));
     }
 
+    @Override
     @GetMapping
-    @Operation(summary = "Listar consultas por periodo")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Listagem por periodo efetuada"),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Datas invalidas ou mal formatadas",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     public ResponseEntity <Page<AppointmentResponseDTO>> listAppointmentsByPeriod(
             @PageableDefault(size = 30) Pageable pageable,
 
-            @Parameter(description = "Usuario manda a primeira data do periodo", required = true)
-
             @RequestParam LocalDateTime firstDate,
-
-            @Parameter(description = "Usuario manda a ultima data do periodo", required = true)
 
             @RequestParam LocalDateTime lastDate) {
 
         return ResponseEntity.status(HttpStatus.OK)
-               .body(appointmentService.listAppointmentsByPeriod(firstDate,lastDate,pageable));
+                .body(appointmentService.listAppointmentsByPeriod(firstDate,lastDate,pageable));
     }
 
+    @Override
     @GetMapping("/patients/{patientId}/scheduled")
-    @Operation(summary = "Listar consultas agendadas do Paciente")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Consultas agendadas do Paciente listadas com sucesso"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Paciente não encontrado",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     public ResponseEntity <Page<AppointmentResponseDTO>> listPatientScheduledAppointments (
             @PageableDefault(size = 5) Pageable pageable,
-
-            @Parameter(description = "Usuario manda o ID do Paciente no path da requisição", required = true)
 
             @PathVariable Long patientId) {
 
         return ResponseEntity.status(HttpStatus.OK)
-               .body(appointmentService.listPatientScheduledAppointments(patientId,pageable));
+                .body(appointmentService.listPatientScheduledAppointments(patientId,pageable));
     }
 
+    @Override
     @GetMapping("/patients/{patientId}")
-    @Operation(summary = "Listar histórico de consultas do Paciente")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Histórico de consultas do Paciente listado com sucesso"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Paciente não encontrado",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     public ResponseEntity <Page<AppointmentResponseDTO>> listPatientAppointmentsHistory (
             @PageableDefault(size = 5) Pageable pageable,
-
-            @Parameter(description = "Usuario manda o ID do Paciente no path da requisição", required = true)
 
             @PathVariable Long patientId) {
         return ResponseEntity.status(HttpStatus.OK).body(appointmentService.listPatientAppointmentsHistory(patientId,pageable));
     }
 
+    @Override
     @GetMapping("/doctors/{doctorId}/scheduled")
-    @Operation(summary = "Listar consultas agendadas do Médico")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Consultas agendadas do Médico listadas com sucesso"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Médico não encontrado",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     public ResponseEntity <Page<AppointmentResponseDTO>> listDoctorScheduledAppointments (
             @PageableDefault(size = 5) Pageable pageable,
 
-            @Parameter(description = "Usuario manda o ID do Médico no path da requisição", required = true)
-
             @PathVariable Long doctorId) {
 
         return ResponseEntity.status(HttpStatus.OK)
-               .body(appointmentService.listDoctorScheduledAppointment(doctorId,pageable));
+                .body(appointmentService.listDoctorScheduledAppointment(doctorId,pageable));
     }
 
+    @Override
     @GetMapping("/doctors/{doctorId}")
-    @Operation(summary = "Listar histórico de consultas do Médico")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Histórico de consultas do Médico listado com sucesso"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Médico não encontrado",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     public ResponseEntity <Page<AppointmentResponseDTO>> listDoctorAppointmentsHistory (
             @PageableDefault(size = 10) Pageable pageable,
 
-            @Parameter(description = "Usuario manda o ID do Médico no path da requisição", required = true)
-
             @PathVariable Long doctorId) {
 
         return ResponseEntity.status(HttpStatus.OK)
-               .body(appointmentService.listDoctorAppointmentsHistory(doctorId, pageable));
+                .body(appointmentService.listDoctorAppointmentsHistory(doctorId, pageable));
     }
 
 
+    @Override
     @PatchMapping("/{appointmentId}/complete")
-    @Operation(summary = "Muda status de consulta SCHEDULED para DONE")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Consulta realizada com sucesso"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Consulta não encontrada",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "Consulta ja se encontra com status DONE, ou se encontra CANCELADA",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     public ResponseEntity <AppointmentResponseDTO> completeAppointment (
-            @Parameter(description = "Usuario manda o ID da Consulta no path da requisição" )
-
             @PathVariable Long appointmentId) {
 
         return ResponseEntity.status(HttpStatus.OK)
-               .body(appointmentService.completeAppointment(appointmentId));
+                .body(appointmentService.completeAppointment(appointmentId));
     }
 
 
+    @Override
     @GetMapping("/today")
-    @Operation(summary = "Listar consultas do dia")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Listagem de consultas do dia efetuada"),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Parâmetros de paginação inválidos",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     public ResponseEntity<Page<TodayAppointmentsDTO>> todayScheduledAppointments (
             @PageableDefault(size = 10) Pageable pageable) {
 
         return ResponseEntity.status(HttpStatus.OK)
-               .body(appointmentService.todayAppointments(pageable));
+                .body(appointmentService.todayAppointments(pageable));
     }
 }
