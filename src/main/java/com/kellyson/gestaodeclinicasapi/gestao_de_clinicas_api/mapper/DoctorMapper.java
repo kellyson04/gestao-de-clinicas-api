@@ -21,6 +21,8 @@ public class DoctorMapper {
         DoctorResponseDTO doctorResponse = DoctorResponseDTO.builder()
                 .name(doctor.getName())
                 .specialty(doctor.getSpecialty())
+                .crmNumber(doctor.getCrmNumber())
+                .crmUf(doctor.getCrmUf())
                 .build();
 
         return doctorResponse;
