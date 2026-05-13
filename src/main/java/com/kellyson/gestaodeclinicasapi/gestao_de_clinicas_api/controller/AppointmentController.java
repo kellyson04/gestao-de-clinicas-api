@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -95,7 +96,7 @@ public class AppointmentController {
                     description = "Datas invalidas ou mal formatadas",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity <List<AppointmentResponseDTO>> listAppointmentsByPeriod(
+    public ResponseEntity <Page<AppointmentResponseDTO>> listAppointmentsByPeriod(
             @PageableDefault(size = 30) Pageable pageable,
 
             @Parameter(description = "Usuario manda a primeira data do periodo", required = true)
@@ -121,7 +122,7 @@ public class AppointmentController {
                     description = "Paciente não encontrado",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity <List<AppointmentResponseDTO>> listPatientScheduledAppointments (
+    public ResponseEntity <Page<AppointmentResponseDTO>> listPatientScheduledAppointments (
             @PageableDefault(size = 5) Pageable pageable,
 
             @Parameter(description = "Usuario manda o ID do Paciente no path da requisição", required = true)
@@ -143,7 +144,7 @@ public class AppointmentController {
                     description = "Paciente não encontrado",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity <List<AppointmentResponseDTO>> listPatientAppointmentsHistory (
+    public ResponseEntity <Page<AppointmentResponseDTO>> listPatientAppointmentsHistory (
             @PageableDefault(size = 5) Pageable pageable,
 
             @Parameter(description = "Usuario manda o ID do Paciente no path da requisição", required = true)
@@ -163,7 +164,7 @@ public class AppointmentController {
                     description = "Médico não encontrado",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity <List<AppointmentResponseDTO>> listDoctorScheduledAppointments (
+    public ResponseEntity <Page<AppointmentResponseDTO>> listDoctorScheduledAppointments (
             @PageableDefault(size = 5) Pageable pageable,
 
             @Parameter(description = "Usuario manda o ID do Médico no path da requisição", required = true)
@@ -185,7 +186,7 @@ public class AppointmentController {
                     description = "Médico não encontrado",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity <List<AppointmentResponseDTO>> listDoctorAppointmentsHistory (
+    public ResponseEntity <Page<AppointmentResponseDTO>> listDoctorAppointmentsHistory (
             @PageableDefault(size = 10) Pageable pageable,
 
             @Parameter(description = "Usuario manda o ID do Médico no path da requisição", required = true)
@@ -233,7 +234,7 @@ public class AppointmentController {
                     description = "Parâmetros de paginação inválidos",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity<List<TodayAppointmentsDTO>> todayScheduledAppointments (
+    public ResponseEntity<Page<TodayAppointmentsDTO>> todayScheduledAppointments (
             @PageableDefault(size = 10) Pageable pageable) {
 
         return ResponseEntity.status(HttpStatus.OK)
