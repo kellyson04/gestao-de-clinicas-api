@@ -1,5 +1,6 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service;
 
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.PatientFiltersRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.PatientRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PatientResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Patient;
@@ -7,6 +8,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.Conflic
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.PatientNotFoundException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.PatientMapper;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PatientRepository;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.specification.PatientSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -42,12 +44,9 @@ public class PatientService {
     }
 
     @Transactional(readOnly = true)
-    public List <PatientResponseDTO> listPatients (Pageable pageable) {
-        return patientRepository.findAll(pageable)
-                .getContent()
-                .stream()
-                .map(patient -> PatientMapper.mapToResponse(patient))
-                .toList();
+    public Page <PatientResponseDTO> listPatients (PatientFiltersRequestDTO filtersRequestDTO, Pageable pageable) {
+        return patientRepository.findAll(PatientSpecification.withFilters(filtersRequestDTO),pageable)
+                .map(patient -> PatientMapper.mapToResponse(patient));
     }
 
     public PatientResponseDTO findByCpf (String cpf) throws RuntimeException {

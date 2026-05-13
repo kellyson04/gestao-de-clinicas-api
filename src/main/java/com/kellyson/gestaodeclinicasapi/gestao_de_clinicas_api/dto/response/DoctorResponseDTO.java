@@ -6,6 +6,8 @@ import lombok.Builder;
 @Builder
 public record DoctorResponseDTO(
         String name,
-        DoctorSpecialty specialty
+        DoctorSpecialty specialty,
+        String crmNumber,
+        String crmUf
 ) {
 }

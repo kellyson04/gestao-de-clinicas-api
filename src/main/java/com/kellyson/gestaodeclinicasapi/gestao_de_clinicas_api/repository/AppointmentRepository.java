@@ -62,7 +62,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
                         )     
             GROUP BY doc.id,doc.name
             """)
-    List<DoctorsWithoutCanceledAppointmentsResponseDTO> doctorsWithoutCanceledAppointments ();
+    Page<DoctorsWithoutCanceledAppointmentsResponseDTO> doctorsWithoutCanceledAppointments (Pageable pageable);
 
     @Query("""
         SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorFuture30AppointmentsDTO(
@@ -76,8 +76,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
         AND app.dateTime >= CURRENT_TIMESTAMP   
         ORDER BY app.dateTime ASC        
             """)
-    List<DoctorFuture30AppointmentsDTO> findDoctorFuture30Appointments(@Param("doctorId") Long doctorId,
-                                                                       Pageable pageable);
+    Page<DoctorFuture30AppointmentsDTO> findDoctorFutureAppointments(Pageable pageable,@Param("doctorId") Long doctorId);
 
     @Query("""
         SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TodayAppointmentsDTO(
@@ -94,7 +93,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
         AND app.status = 'SCHEDULED'    
         ORDER BY app.dateTime ASC
             """)
-    List<TodayAppointmentsDTO> findTodayAppointments (@Param("startOfDay") LocalDateTime start, @Param("endOfDay") LocalDateTime end,Pageable pageable);
+    Page<TodayAppointmentsDTO> findTodayAppointments (@Param("startOfDay") LocalDateTime start, @Param("endOfDay") LocalDateTime end,Pageable pageable);
 
     @Query("""
            SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorsCanceledAppointmentsDTO(

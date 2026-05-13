@@ -78,57 +78,53 @@ public class AppointmentService {
     }
 
     @Transactional(readOnly = true)
-    public List<AppointmentResponseDTO> listAppointmentsByPeriod (LocalDateTime firstDate, LocalDateTime lastDate,Pageable pageable) {
+    public Page<AppointmentResponseDTO> listAppointmentsByPeriod (LocalDateTime firstDate, LocalDateTime lastDate,Pageable pageable) {
         if (firstDate.isAfter(lastDate) || lastDate.isBefore(firstDate)) {
             throw new BadRequestException("Voce esta colocando uma data invalida");
         }
 
         Page<Appointment> appointments = appointmentRepository.findAppointmentsByDateTimeBetween(firstDate,lastDate,pageable);
 
-        return appointments.stream()
-                .map(appointment -> AppointmentMapper.mapToResponse(appointment))
-                .toList();
+        return appointments
+                .map(appointment -> AppointmentMapper.mapToResponse(appointment));
     }
 
     @Transactional(readOnly = true)
-    public List<AppointmentResponseDTO> listPatientScheduledAppointments (Long patientId,Pageable pageable) {
+    public Page<AppointmentResponseDTO> listPatientScheduledAppointments (Long patientId,Pageable pageable) {
         Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException("Paciente não encontrado"));
 
         Page<Appointment> appointments = appointmentRepository.findByPatientAndStatus(patient,AppointmentStatus.SCHEDULED,pageable);
-        return appointments.stream()
-                .map(appointment -> AppointmentMapper.mapToResponse(appointment))
-                .toList();
+        return appointments
+                .map(appointment -> AppointmentMapper.mapToResponse(appointment));
     }
 
     @Transactional(readOnly = true)
-    public List<AppointmentResponseDTO> listPatientAppointmentsHistory (Long patientId, Pageable pageable) {
+    public Page<AppointmentResponseDTO> listPatientAppointmentsHistory (Long patientId, Pageable pageable) {
         Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException("Paciente não encontrado"));
 
-        return appointmentRepository.findByPatient(patient,pageable).stream()
-                .map(appointment -> AppointmentMapper.mapToResponse(appointment))
-                .toList();
+        return appointmentRepository.findByPatient(patient,pageable)
+                .map(appointment -> AppointmentMapper.mapToResponse(appointment));
 
     }
 
     @Transactional(readOnly = true)
-    public List<AppointmentResponseDTO> listDoctorScheduledAppointment (Long doctorId,Pageable pageable) {
+    public Page<AppointmentResponseDTO> listDoctorScheduledAppointment (Long doctorId,Pageable pageable) {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado"));
 
         Page<Appointment> appointments = appointmentRepository.findByDoctorAndStatus(doctor,AppointmentStatus.SCHEDULED,pageable);
 
-        return appointments.stream()
-                .map(appointment -> AppointmentMapper.mapToResponse(appointment))
-                .toList();
+        return appointments
+                .map(appointment -> AppointmentMapper.mapToResponse(appointment));
+
     }
 
     @Transactional(readOnly = true)
-    public List<AppointmentResponseDTO> listDoctorAppointmentsHistory (Long doctorId, Pageable pageable) {
+    public Page<AppointmentResponseDTO> listDoctorAppointmentsHistory (Long doctorId, Pageable pageable) {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado"));
 
         return appointmentRepository.findByDoctor(doctor,pageable)
-                .stream()
-                .map(appointment -> AppointmentMapper.mapToResponse(appointment))
-                .toList();
+                .map(appointment -> AppointmentMapper.mapToResponse(appointment));
+
     }
 
 
@@ -149,7 +145,7 @@ public class AppointmentService {
         return AppointmentMapper.mapToResponse(appointment);
     }
 
-    public List<TodayAppointmentsDTO> todayAppointments (Pageable pageable) {
+    public Page<TodayAppointmentsDTO> todayAppointments (Pageable pageable) {
         LocalDate today = LocalDate.now();
 
         LocalDateTime startOfDay = today.atStartOfDay();

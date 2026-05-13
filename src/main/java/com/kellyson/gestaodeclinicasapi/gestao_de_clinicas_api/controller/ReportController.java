@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -48,8 +49,10 @@ public class ReportController {
                     responseCode = "200",
                     description = "Listagem dos Médicos efetuada com sucesso")
     })
-    public ResponseEntity <List<DoctorsWithoutCanceledAppointmentsResponseDTO>> doctorsWithoutCanceledAppointments () {
-        return ResponseEntity.status(HttpStatus.OK).body(reportService.doctorsWithoutCanceledAppointments());
+    public ResponseEntity <Page<DoctorsWithoutCanceledAppointmentsResponseDTO>> doctorsWithoutCanceledAppointments (
+            @PageableDefault(size = 20)
+            Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(reportService.doctorsWithoutCanceledAppointments(pageable));
     }
 
 
@@ -68,13 +71,16 @@ public class ReportController {
                     description = "Erro ao Listar as 30 Consultas do Médico, Dados invalidos na requisição",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity <List<DoctorFuture30AppointmentsDTO>> doctorFutureAppointments (
+    public ResponseEntity <Page<DoctorFuture30AppointmentsDTO>> doctorFutureAppointments (
+            @PageableDefault(size = 30)
+            Pageable pageable,
+
             @Parameter(description = "Usuario manda o ID do Médico no path da requisição")
 
             @PathVariable Long doctorId) {
 
         return ResponseEntity.status(HttpStatus.OK)
-               .body(reportService.doctorFuture30Appointments(doctorId));
+               .body(reportService.doctorFutureAppointments(pageable,doctorId));
     }
 
 
@@ -85,8 +91,8 @@ public class ReportController {
                     responseCode = "200",
                     description = "Listagem de pacientes com pagamento pendente efetuada com sucesso")
     })
-    public ResponseEntity <List<PendingPaymentPatientResponseDTO>> patientsWithPendingPayments (
-            @PageableDefault(size = 10) Pageable pageable) {
+    public ResponseEntity <Page<PendingPaymentPatientResponseDTO>> patientsWithPendingPayments (
+            @PageableDefault(size = 30) Pageable pageable) {
 
         return ResponseEntity.status(HttpStatus.OK)
                .body(reportService.patientsWithPendingPayments(pageable));
