@@ -1,5 +1,6 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.doc.PaymentControllerDoc;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.PaymentRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.ErrorResponse;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PaymentResponseDTO;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/clinica/payments")
-public class PaymentController {
+public class PaymentController implements PaymentControllerDoc {
 
     private final PaymentService paymentService;
 
@@ -29,78 +30,30 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
+    @Override
     @PostMapping("/register")
-    @Operation(summary = "Registrar Pagamento", description = "Usuario registra o pagamento no sistema")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Pagamento registrado com sucesso"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Consulta não encontrada",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "Conflito na regra de negócio (pagamento inválido)",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     public ResponseEntity <PaymentResponseDTO> registerPayment (
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Usuario envia os dados para registrar pagamento",
-                    required = true)
-
             @Valid @RequestBody PaymentRequestDTO paymentRequestDTO) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
-               .body(paymentService.registerPayment(paymentRequestDTO));
+                .body(paymentService.registerPayment(paymentRequestDTO));
     }
 
 
+    @Override
     @PatchMapping("/{paymentId}/retry")
-    @Operation(summary = "Refazer Pagamento Cancelado",
-               description = "Refaz o Pagamento pra consulta caso o antigo tenha status CANCELED")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Tentativa de refazer o pagamento efetuada com sucesso"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Consulta ou pagamento não encontrado",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "Conflito na regra de negócio (Tentativa de refazer pagamento inválida)",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     public ResponseEntity <PaymentResponseDTO> retryPayment (
-            @Parameter(description = "Usuario envia o ID do pagamento no path da requisição", required = true)
-
             @PathVariable Long paymentId,
-
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Usuario envia os dados para refazer pagamento",
-                    required = true)
 
             @Valid @RequestBody PaymentRequestDTO paymentRequestDTO) {
 
         return ResponseEntity.status(HttpStatus.OK)
-               .body(paymentService.retryPayment(paymentId,paymentRequestDTO));
+                .body(paymentService.retryPayment(paymentId,paymentRequestDTO));
     }
 
 
+    @Override
     @PatchMapping("/{paymentId}/confirm")
-    @Operation(summary = "Confirmar Pagamento", description = "Confirmar pagamento que ficou pendente")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "204",
-                    description = "Pagamento confirmado com sucesso"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Pagamento não encontrado",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "Conflito na regra de negócio (Tentativa de confirmar pagamento inválida)",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     public ResponseEntity<Void> confirmPayment (@PathVariable Long paymentId) {
 
         paymentService.confirmPayment(paymentId);
@@ -108,27 +61,12 @@ public class PaymentController {
     }
 
 
+    @Override
     @PatchMapping("/{paymentId}/cancel")
-    @Operation(summary = "Cancela pagamento")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Pagamento cancelado com sucesso"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Pagamento não encontrado",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "Pagamento ja se encontra cancelado",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     public ResponseEntity<PaymentResponseDTO> cancelPayment (
-            @Parameter(description = "Usuario envia o ID do pagamento no path da requisição")
-
             @PathVariable Long paymentId) {
 
         return ResponseEntity.status(HttpStatus.OK)
-               .body(paymentService.cancelPayment(paymentId));
+                .body(paymentService.cancelPayment(paymentId));
     }
 }

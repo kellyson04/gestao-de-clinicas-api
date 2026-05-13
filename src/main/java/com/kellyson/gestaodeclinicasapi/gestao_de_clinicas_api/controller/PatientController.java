@@ -1,5 +1,6 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.doc.PatientControllerDoc;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.PatientFiltersRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.PatientRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.AppointmentResponseDTO;
@@ -24,7 +25,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/clinica/patients")
-public class PatientController {
+public class PatientController implements PatientControllerDoc {
 
     private final PatientService patientService;
 
@@ -33,34 +34,17 @@ public class PatientController {
     }
 
 
+    @Override
     @PostMapping
-    @Operation(summary = "Cadastrar Paciente")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Cadastra um Paciente no sistema"),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Erro ao cadastrar Paciente, Dados invalidos na requisição",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     public ResponseEntity <PatientResponseDTO> createPatient (
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Usuario manda os dados do Paciente a ser criado",
-                    required = true)
-
             @Valid @RequestBody PatientRequestDTO patientRequestDTO) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
-               .body(patientService.createPatient(patientRequestDTO));
+                .body(patientService.createPatient(patientRequestDTO));
     }
 
+    @Override
     @GetMapping
-    @Operation(summary = "Listar pacientes")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Listagem de pacientes efetuada")
-    })
     public ResponseEntity <Page<PatientResponseDTO>> listPatients (
             @ModelAttribute PatientFiltersRequestDTO filtersRequestDTO,
             @PageableDefault(size = 10) Pageable pageable) {
@@ -69,44 +53,18 @@ public class PatientController {
     }
 
 
+    @Override
     @GetMapping("/{cpf}")
-    @Operation(summary = "Buscar Paciente pelo CPF")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Paciente encontrado com sucesso"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Paciente não encontrado",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     public ResponseEntity <PatientResponseDTO> findByCpf (
-            @Parameter(description = "Usuario manda o CPF no path da requisição", required = true)
-
             @PathVariable String cpf) {
 
         return ResponseEntity.ok(patientService.findByCpf(cpf));
     }
 
 
+    @Override
     @PatchMapping("/{patientId}/deactivate")
-    @Operation(summary = "Desativar Paciente")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "204",
-                    description = "Paciente desativado com sucesso"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Paciente não encontrado",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "Paciente ja esta desativado",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     public ResponseEntity<Void> deactivePatient (
-            @Parameter(description = "Usuario manda o ID do Paciente no path da requisição")
-
             @PathVariable Long patientId) {
 
         patientService.softDelete(patientId);
