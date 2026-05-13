@@ -21,6 +21,9 @@ public class PatientMapper {
     public static PatientResponseDTO mapToResponse (Patient patient) {
         PatientResponseDTO patientResponse = PatientResponseDTO.builder()
                                              .name(patient.getName())
+                                             .state(patient.getState())
+                                             .city(patient.getCity())
+                                             .birthDate(patient.getBirthDate())
                                              .build();
 
         return patientResponse;
