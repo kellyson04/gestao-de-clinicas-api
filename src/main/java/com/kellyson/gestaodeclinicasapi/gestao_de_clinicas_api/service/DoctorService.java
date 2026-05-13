@@ -1,5 +1,6 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service;
 
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.DoctorFiltersRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.DoctorRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.DoctorResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
@@ -8,6 +9,8 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.Conflic
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.DoctorNotFoundException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.DoctorMapper;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.specification.DoctorSpecification;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,12 +40,9 @@ public class DoctorService {
 
 
     @Transactional(readOnly = true)
-    public List<DoctorResponseDTO> findBySpecialty (DoctorSpecialty specialty, Pageable pageable) {
-        return doctorRepository.findBySpecialty(specialty,pageable)
-                .getContent()
-                .stream()
-                .map(doctor -> DoctorMapper.mapToResponse(doctor))
-                .toList();
+    public Page<DoctorResponseDTO> listDoctors (DoctorFiltersRequestDTO filtersRequestDTO, Pageable pageable) {
+        return doctorRepository.findAll(DoctorSpecification.withFilters(filtersRequestDTO),pageable)
+                .map(doctor -> DoctorMapper.mapToResponse(doctor));
     }
 
     @Transactional
