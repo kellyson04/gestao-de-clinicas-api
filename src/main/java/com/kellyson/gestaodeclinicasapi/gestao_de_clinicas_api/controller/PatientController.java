@@ -1,5 +1,6 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.PatientFiltersRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.PatientRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.AppointmentResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.ErrorResponse;
@@ -60,10 +61,11 @@ public class PatientController {
                     responseCode = "200",
                     description = "Listagem de pacientes efetuada")
     })
-    public ResponseEntity <List<PatientResponseDTO>> listPatients (
+    public ResponseEntity <Page<PatientResponseDTO>> listPatients (
+            @ModelAttribute PatientFiltersRequestDTO filtersRequestDTO,
             @PageableDefault(size = 10) Pageable pageable) {
 
-        return ResponseEntity.ok(patientService.listPatients(pageable));
+        return ResponseEntity.ok(patientService.listPatients(filtersRequestDTO,pageable));
     }
 
 
