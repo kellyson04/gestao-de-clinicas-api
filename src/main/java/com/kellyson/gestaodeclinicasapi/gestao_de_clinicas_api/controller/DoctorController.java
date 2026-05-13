@@ -1,5 +1,6 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.DoctorFiltersRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.DoctorRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.DoctorResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.ErrorResponse;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -51,24 +53,22 @@ public class DoctorController {
     }
 
     @GetMapping
-    @Operation(summary = "Listar Médicos pela sua especialidade")
+    @Operation(summary = "Listar Médicos")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Listagem por especialidade efetuada"),
+                    description = "Listagem  efetuada"),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Especialidade invalida",
+                    description = "Filtros invalidos, verifique os parametros informados",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity <List<DoctorResponseDTO>> listBySpecialty (
-            @Parameter(description = "Usuario seleciona especialidade do Médico", required = true)
-
-            @RequestParam DoctorSpecialty specialty,
+    public ResponseEntity <Page<DoctorResponseDTO>> listDoctors (
+            @ModelAttribute DoctorFiltersRequestDTO filtersRequestDTO,
 
             @PageableDefault(size = 10) Pageable pageable) {
 
-        return ResponseEntity.ok(doctorService.findBySpecialty(specialty,pageable));
+            return ResponseEntity.status(HttpStatus.OK).body(doctorService.listDoctors(filtersRequestDTO,pageable));
     }
 
     @PatchMapping("/{doctorId}/deactivate")
