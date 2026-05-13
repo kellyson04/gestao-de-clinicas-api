@@ -7,6 +7,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.DoctorN
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.AppointmentRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PaymentRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -40,14 +41,13 @@ public class ReportService {
     }
 
     @Transactional(readOnly = true)
-    public List<DoctorsWithoutCanceledAppointmentsResponseDTO> doctorsWithoutCanceledAppointments () {
-        return appointmentRepository.doctorsWithoutCanceledAppointments();
+    public Page<DoctorsWithoutCanceledAppointmentsResponseDTO> doctorsWithoutCanceledAppointments (Pageable pageable) {
+        return appointmentRepository.doctorsWithoutCanceledAppointments(pageable);
     }
 
     @Transactional(readOnly = true)
-    public List<PendingPaymentPatientResponseDTO> patientsWithPendingPayments (Pageable pageable) {
-        return paymentRepository.listPatientsWithPendingPayment(pageable)
-                .getContent();
+    public Page<PendingPaymentPatientResponseDTO> patientsWithPendingPayments (Pageable pageable) {
+        return paymentRepository.listPatientsWithPendingPayment(pageable);
     }
 
     @Transactional(readOnly = true)
@@ -56,10 +56,10 @@ public class ReportService {
     }
 
     @Transactional(readOnly = true)
-    public List<DoctorFuture30AppointmentsDTO> doctorFuture30Appointments (Long doctorId) {
+    public Page<DoctorFuture30AppointmentsDTO> doctorFutureAppointments (Pageable pageable,Long doctorId) {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado"));
 
-       return appointmentRepository.findDoctorFuture30Appointments(doctorId,PageRequest.of(0,30));
+       return appointmentRepository.findDoctorFutureAppointments(pageable,doctorId);
     }
 
     public ClinicProfitByYearDTO getClinicProfitByYear (Integer year) {
