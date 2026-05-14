@@ -25,18 +25,14 @@ public class PatientService {
         this.patientRepository = patientRepository;
     }
 
+    @Transactional
     public PatientResponseDTO createPatient (PatientRequestDTO patientRequestDTO) {
 
         if (patientRepository.existsByCpf(patientRequestDTO.cpf())) {
             throw new ConflictException("CPF Ja em uso");
         }
 
-        Patient patient = Patient.builder()
-                .name(patientRequestDTO.name())
-                .cpf(patientRequestDTO.cpf())
-                .birthDate(patientRequestDTO.birthDate())
-                .isActive(true)
-                .build();
+        Patient patient = PatientMapper.mapToEntity(patientRequestDTO);
 
         patientRepository.save(patient);
 
@@ -49,7 +45,8 @@ public class PatientService {
                 .map(patient -> PatientMapper.mapToResponse(patient));
     }
 
-    public PatientResponseDTO findByCpf (String cpf) throws RuntimeException {
+    @Transactional(readOnly = true)
+    public PatientResponseDTO findByCpf (String cpf)  {
         Patient patientByCpf = patientRepository.findByCpf(cpf).orElseThrow(() -> new PatientNotFoundException("Paciente não encontrado"));
 
         return PatientMapper.mapToResponse(patientByCpf);
