@@ -5,6 +5,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.Docto
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.DoctorResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.DoctorSpecialty;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.BadRequestException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.ConflictException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.DoctorNotFoundException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.DoctorMapper;
@@ -26,12 +27,14 @@ public class DoctorService {
         this.doctorRepository = doctorRepository;
     }
 
+    @Transactional
     public DoctorResponseDTO createDoctor (DoctorRequestDTO doctorRequestDTO) {
-        Doctor doctor = Doctor.builder()
-                .name(doctorRequestDTO.name())
-                .specialty(doctorRequestDTO.specialty())
-                .isActive(true)
-                .build();
+
+        if (doctorRepository.existsByCrmNumber(doctorRequestDTO.crmNumber())) {
+            throw new ConflictException("Ja existe um Médico com este CRM no sistema");
+        }
+
+        Doctor doctor = DoctorMapper.mapToEntity(doctorRequestDTO);
 
         doctorRepository.save(doctor);
 
