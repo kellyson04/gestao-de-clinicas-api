@@ -42,7 +42,7 @@ public class ReportService {
 
     @Transactional(readOnly = true)
     public Page<DoctorsWithoutCanceledAppointmentsResponseDTO> doctorsWithoutCanceledAppointments (Pageable pageable) {
-        return appointmentRepository.doctorsWithoutCanceledAppointments(pageable);
+        return appointmentRepository.findDoctorsWithoutCanceledAppointments(pageable);
     }
 
     @Transactional(readOnly = true)

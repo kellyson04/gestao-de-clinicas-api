@@ -55,14 +55,17 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
                COUNT(app.id))
             FROM Appointment app
             JOIN app.doctor doc
-            WHERE doc.id NOT IN (
-                        SELECT doctor.id
-                        FROM Appointment
-                        WHERE status = 'CANCELED'
+            WHERE app.status = 'DONE'
+            AND NOT EXISTS (
+                        SELECT app2.doctor
+                        FROM Appointment app2
+                        WHERE app2.doctor = doc
+                        AND app2.status = 'CANCELED'
                         )     
             GROUP BY doc.id,doc.name
+            ORDER BY COUNT(app.id) DESC
             """)
-    Page<DoctorsWithoutCanceledAppointmentsResponseDTO> doctorsWithoutCanceledAppointments (Pageable pageable);
+    Page<DoctorsWithoutCanceledAppointmentsResponseDTO> findDoctorsWithoutCanceledAppointments (Pageable pageable);
 
     @Query("""
         SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorFuture30AppointmentsDTO(
