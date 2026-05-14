@@ -5,6 +5,8 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.Pati
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Patient;
 import lombok.experimental.UtilityClass;
 
+import java.time.LocalDateTime;
+
 @UtilityClass
 public class PatientMapper {
 
@@ -13,6 +15,10 @@ public class PatientMapper {
                 .name(patientRequestDTO.name())
                 .cpf(patientRequestDTO.cpf())
                 .birthDate(patientRequestDTO.birthDate())
+                .city(patientRequestDTO.city())
+                .state(patientRequestDTO.state())
+                .createdAt(LocalDateTime.now())
+                .isActive(true)
                 .build();
 
         return patientEntity;
