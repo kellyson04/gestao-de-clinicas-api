@@ -14,4 +14,5 @@ import java.util.Optional;
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor,Long>, JpaSpecificationExecutor<Doctor> {
     Page<Doctor> findBySpecialty(DoctorSpecialty specialty, Pageable pageable);
+    boolean existsByCrmNumber(String crmNumber);
 }
