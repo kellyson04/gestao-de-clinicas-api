@@ -29,7 +29,7 @@ public class PatientService {
     public PatientResponseDTO createPatient (PatientRequestDTO patientRequestDTO) {
 
         if (patientRepository.existsByCpf(patientRequestDTO.cpf())) {
-            throw new ConflictException("CPF Ja em uso");
+            throw new ConflictException("Ja existe um Paciente com este CPF no sistema");
         }
 
         Patient patient = PatientMapper.mapToEntity(patientRequestDTO);
