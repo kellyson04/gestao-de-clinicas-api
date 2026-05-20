@@ -1,9 +1,9 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.doc.AppointmentControllerDoc;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.AppointmentRequestDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.AppointmentResponseDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TodayAppointmentsDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.appointment.AppointmentRequestDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.appointment.AppointmentResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TodayAppointmentsReportDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.AppointmentService;
 
 import jakarta.validation.Valid;
@@ -112,7 +112,7 @@ public class AppointmentController implements AppointmentControllerDoc {
 
     @Override
     @GetMapping("/today")
-    public ResponseEntity<Page<TodayAppointmentsDTO>> todayScheduledAppointments (
+    public ResponseEntity<Page<TodayAppointmentsReportDTO>> todayScheduledAppointments (
             @PageableDefault(size = 10) Pageable pageable) {
 
         return ResponseEntity.status(HttpStatus.OK)

@@ -1,8 +1,8 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report;
 
-public record TopDoctorsByDoneAppointmentsResponseDTO(
+public record DoctorsWithoutCanceledAppointmentsReportDTO(
         Long id,
-        String name,
+        String nome,
         Long totalAppointments
 ) {
 }

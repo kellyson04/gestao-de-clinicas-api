@@ -1,6 +1,4 @@
-package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request;
-
-import jakarta.validation.constraints.*;
+package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.patient;
 
 import java.time.LocalDate;
 

@@ -1,9 +1,9 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service;
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.AppointmentRequestDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.AppointmentResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.appointment.AppointmentRequestDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.appointment.AppointmentResponseDTO;
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TodayAppointmentsDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TodayAppointmentsReportDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Appointment;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Patient;
@@ -14,14 +14,12 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.Appoin
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PatientRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class AppointmentService {
@@ -52,7 +50,7 @@ public class AppointmentService {
             throw new ConflictException("Ja existe uma consulta com este médico no mesmo horario");
         }
 
-        if (patient.getIsActive() == false || doctor.getIsActive() == false) {
+        if (!patient.isActive() || !doctor.isActive()) {
             throw new ConflictException("Paciente ou Médico se encontra inativo");
         }
 
@@ -145,7 +143,7 @@ public class AppointmentService {
         return AppointmentMapper.mapToResponse(appointment);
     }
 
-    public Page<TodayAppointmentsDTO> todayAppointments (Pageable pageable) {
+    public Page<TodayAppointmentsReportDTO> todayAppointments (Pageable pageable) {
         LocalDate today = LocalDate.now();
 
         LocalDateTime startOfDay = today.atStartOfDay();

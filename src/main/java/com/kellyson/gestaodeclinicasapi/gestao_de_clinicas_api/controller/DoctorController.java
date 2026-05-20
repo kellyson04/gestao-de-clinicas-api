@@ -1,9 +1,9 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.doc.DoctorControllerDoc;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.DoctorFiltersRequestDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.DoctorRequestDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.DoctorResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.doctor.DoctorFiltersRequestDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.doctor.DoctorRequestDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.doctor.DoctorResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.DoctorService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -12,8 +12,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/clinica/doctors")

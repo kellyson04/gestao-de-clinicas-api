@@ -1,4 +1,4 @@
-package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request;
+package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.appointment;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;

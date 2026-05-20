@@ -1,7 +1,7 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service;
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.PaymentRequestDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.PaymentResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.payment.PaymentRequestDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.payment.PaymentResponseDTO;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Appointment;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Payment;
@@ -14,12 +14,8 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.Payment
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.PaymentMapper;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.AppointmentRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PaymentRepository;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class PaymentService {

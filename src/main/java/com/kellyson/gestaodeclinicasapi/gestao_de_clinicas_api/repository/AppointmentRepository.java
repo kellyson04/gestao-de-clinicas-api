@@ -7,7 +7,6 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Patient;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.AppointmentStatus;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -37,7 +36,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
     Page<Appointment> findByDoctorAndStatus (Doctor doctor,AppointmentStatus status, Pageable pageable);
     Page<Appointment> findByDoctor(Doctor doctor, Pageable pageable);
     @Query("""
-          SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TopDoctorsByDoneAppointmentsResponseDTO(
+          SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TopDoctorsByDoneAppointmentsReportDTO(
             doc.id,
             doc.name,
             COUNT(app.id))
@@ -47,9 +46,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
           GROUP BY doc.id,doc.name
           ORDER BY COUNT(app.id) DESC           
           """)
-    List<TopDoctorsByDoneAppointmentsResponseDTO> findTop10DoctorsByDoneAppointments (Pageable pageable);
+    List<TopDoctorsByDoneAppointmentsReportDTO> findTop10DoctorsByDoneAppointments (Pageable pageable);
     @Query("""
-            SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorsWithoutCanceledAppointmentsResponseDTO(
+            SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorsWithoutCanceledAppointmentsReportDTO(
                doc.id,
                doc.name,
                COUNT(app.id))
@@ -65,10 +64,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
             GROUP BY doc.id,doc.name
             ORDER BY COUNT(app.id) DESC
             """)
-    Page<DoctorsWithoutCanceledAppointmentsResponseDTO> findDoctorsWithoutCanceledAppointments (Pageable pageable);
+    Page<DoctorsWithoutCanceledAppointmentsReportDTO> findDoctorsWithoutCanceledAppointments (Pageable pageable);
 
     @Query("""
-        SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorFuture30AppointmentsDTO(
+        SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorFutureAppointmentsReportDTO(
                 doc.id,
                 doc.name,
                 app.dateTime)
@@ -79,10 +78,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
         AND app.dateTime >= CURRENT_TIMESTAMP   
         ORDER BY app.dateTime ASC        
             """)
-    Page<DoctorFuture30AppointmentsDTO> findDoctorFutureAppointments(Pageable pageable,@Param("doctorId") Long doctorId);
+    Page<DoctorFutureAppointmentsReportDTO> findDoctorFutureAppointments(Pageable pageable, @Param("doctorId") Long doctorId);
 
     @Query("""
-        SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TodayAppointmentsDTO(
+        SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TodayAppointmentsReportDTO(
                 doc.id,
                 doc.name,
                 pat.id,
@@ -96,10 +95,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
         AND app.status = 'SCHEDULED'    
         ORDER BY app.dateTime ASC
             """)
-    Page<TodayAppointmentsDTO> findTodayAppointments (@Param("startOfDay") LocalDateTime start, @Param("endOfDay") LocalDateTime end,Pageable pageable);
+    Page<TodayAppointmentsReportDTO> findTodayAppointments (@Param("startOfDay") LocalDateTime start, @Param("endOfDay") LocalDateTime end, Pageable pageable);
 
     @Query("""
-           SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorsCanceledAppointmentsDTO(
+           SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorsCanceledAppointmentsReportDTO(
                       doc.id,
                       doc.name,
                       COUNT(app.id))
@@ -109,5 +108,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
            GROUP BY doc.id,doc.name
            ORDER BY COUNT(app.id) DESC           
            """)
-    List<DoctorsCanceledAppointmentsDTO> findDoctorsWithHighestCanceledAppointments (Pageable pageable);
+    List<DoctorsCanceledAppointmentsReportDTO> findDoctorsWithHighestCanceledAppointments (Pageable pageable);
 }

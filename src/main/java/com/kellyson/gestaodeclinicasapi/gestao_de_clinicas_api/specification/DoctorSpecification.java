@@ -1,6 +1,6 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.specification;
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.DoctorFiltersRequestDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.doctor.DoctorFiltersRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.DoctorSpecialty;
 import org.springframework.data.jpa.domain.Specification;
