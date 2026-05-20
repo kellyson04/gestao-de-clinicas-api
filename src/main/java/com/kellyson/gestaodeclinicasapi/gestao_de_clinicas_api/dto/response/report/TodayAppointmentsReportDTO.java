@@ -2,7 +2,7 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.rep
 
 import java.time.LocalDateTime;
 
-public record TodayAppointmentsDTO(
+public record TodayAppointmentsReportDTO(
         Long doctorId,
         String doctorName,
         Long patientId,

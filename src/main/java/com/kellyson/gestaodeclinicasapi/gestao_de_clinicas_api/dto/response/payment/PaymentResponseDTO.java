@@ -1,6 +1,5 @@
-package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response;
+package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.payment;
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Appointment;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.PaymentStatus;
 import lombok.Builder;
 

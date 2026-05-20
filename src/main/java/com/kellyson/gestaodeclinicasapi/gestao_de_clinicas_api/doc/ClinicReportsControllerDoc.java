@@ -1,13 +1,13 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.doc;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.ErrorResponse;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.ClinicProfitByYearDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorFuture30AppointmentsDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorsCanceledAppointmentsDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorsWithoutCanceledAppointmentsResponseDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.PendingPaymentPatientResponseDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.Top5DoctorsByRevenueResponseDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TopDoctorsByDoneAppointmentsResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.ClinicProfitByYearReportDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorFutureAppointmentsReportDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorsCanceledAppointmentsReportDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.DoctorsWithoutCanceledAppointmentsReportDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.PendingPaymentPatientsReportDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.Top5DoctorsByRevenueReportDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TopDoctorsByDoneAppointmentsReportDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -36,7 +36,7 @@ public interface ClinicReportsControllerDoc {
                     responseCode = "200",
                     description = "Médicos listados com sucesso")
     })
-    ResponseEntity <List<TopDoctorsByDoneAppointmentsResponseDTO>> findTop10DoctorsByDoneAppointments (Pageable pageable);
+    ResponseEntity <List<TopDoctorsByDoneAppointmentsReportDTO>> findTop10DoctorsByDoneAppointments (Pageable pageable);
 
 
     @Operation(summary = "Lista Médicos que nunca tiveram consulta cancelada")
@@ -45,7 +45,7 @@ public interface ClinicReportsControllerDoc {
                     responseCode = "200",
                     description = "Listagem dos Médicos efetuada com sucesso")
     })
-    ResponseEntity <Page<DoctorsWithoutCanceledAppointmentsResponseDTO>> doctorsWithoutCanceledAppointments (
+    ResponseEntity <Page<DoctorsWithoutCanceledAppointmentsReportDTO>> doctorsWithoutCanceledAppointments (
             Pageable pageable);
 
 
@@ -63,7 +63,7 @@ public interface ClinicReportsControllerDoc {
                     description = "Erro ao Listar as 30 Consultas do Médico, Dados invalidos na requisição",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    ResponseEntity <Page<DoctorFuture30AppointmentsDTO>> doctorFutureAppointments (
+    ResponseEntity <Page<DoctorFutureAppointmentsReportDTO>> doctorFutureAppointments (
             Pageable pageable,
 
             @Parameter(description = "Usuario manda o ID do Médico no path da requisição")
@@ -77,7 +77,7 @@ public interface ClinicReportsControllerDoc {
                     responseCode = "200",
                     description = "Listagem de pacientes com pagamento pendente efetuada com sucesso")
     })
-    ResponseEntity <Page<PendingPaymentPatientResponseDTO>> patientsWithPendingPayments (
+    ResponseEntity <Page<PendingPaymentPatientsReportDTO>> patientsWithPendingPayments (
             Pageable pageable);
 
 
@@ -87,7 +87,7 @@ public interface ClinicReportsControllerDoc {
                     responseCode = "200",
                     description = "Listagem dos 5 Médicos mais bem pagos efetuada com sucesso"),
     })
-    ResponseEntity <List<Top5DoctorsByRevenueResponseDTO>> findTop5DoctorsByRevenue (Pageable pageable);
+    ResponseEntity <List<Top5DoctorsByRevenueReportDTO>> findTop5DoctorsByRevenue (Pageable pageable);
 
 
     @Operation(summary = "Mostra faturamento total da clinica no ano e lucro obtido")
@@ -100,7 +100,7 @@ public interface ClinicReportsControllerDoc {
                     description = "Ano invalido informado na requisição",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    ResponseEntity <ClinicProfitByYearDTO> getClinicProfitByYear (
+    ResponseEntity <ClinicProfitByYearReportDTO> getClinicProfitByYear (
             @Parameter(description = "Ano usado para calcular o faturamento e lucro da clinica", example = "2026")
 
             @RequestParam Integer year);
@@ -112,6 +112,6 @@ public interface ClinicReportsControllerDoc {
                     responseCode = "200",
                     description = "Listagem dos 50 médicos efetuada com sucesso")
     })
-    ResponseEntity <List<DoctorsCanceledAppointmentsDTO>> listDoctorsWithMostCanceledAppointments ();
+    ResponseEntity <List<DoctorsCanceledAppointmentsReportDTO>> listDoctorsWithMostCanceledAppointments ();
 
 }

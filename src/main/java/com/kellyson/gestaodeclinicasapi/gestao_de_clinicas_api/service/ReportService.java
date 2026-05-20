@@ -2,7 +2,6 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.*;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.AppointmentStatus;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.DoctorNotFoundException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.AppointmentRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
@@ -10,16 +9,12 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.Paymen
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReportService {
@@ -35,41 +30,41 @@ public class ReportService {
     }
 
     @Transactional(readOnly = true)
-    public List<TopDoctorsByDoneAppointmentsResponseDTO> findTop10DoctorsByDoneAppointments (Pageable pageable) {
+    public List<TopDoctorsByDoneAppointmentsReportDTO> findTop10DoctorsByDoneAppointments (Pageable pageable) {
 
         return appointmentRepository.findTop10DoctorsByDoneAppointments(PageRequest.of(0,10));
     }
 
     @Transactional(readOnly = true)
-    public Page<DoctorsWithoutCanceledAppointmentsResponseDTO> doctorsWithoutCanceledAppointments (Pageable pageable) {
+    public Page<DoctorsWithoutCanceledAppointmentsReportDTO> doctorsWithoutCanceledAppointments (Pageable pageable) {
         return appointmentRepository.findDoctorsWithoutCanceledAppointments(pageable);
     }
 
     @Transactional(readOnly = true)
-    public Page<PendingPaymentPatientResponseDTO> patientsWithPendingPayments (Pageable pageable) {
+    public Page<PendingPaymentPatientsReportDTO> patientsWithPendingPayments (Pageable pageable) {
         return paymentRepository.listPatientsWithPendingPayment(pageable);
     }
 
     @Transactional(readOnly = true)
-    public List<Top5DoctorsByRevenueResponseDTO> findTop5DoctorsByRevenue (Pageable pageable) {
+    public List<Top5DoctorsByRevenueReportDTO> findTop5DoctorsByRevenue (Pageable pageable) {
         return paymentRepository.findTop5DoctorsByRevenue(PageRequest.of(0,5));
     }
 
     @Transactional(readOnly = true)
-    public Page<DoctorFuture30AppointmentsDTO> doctorFutureAppointments (Pageable pageable,Long doctorId) {
+    public Page<DoctorFutureAppointmentsReportDTO> doctorFutureAppointments (Pageable pageable, Long doctorId) {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado"));
 
        return appointmentRepository.findDoctorFutureAppointments(pageable,doctorId);
     }
 
-    public ClinicProfitByYearDTO getClinicProfitByYear (Integer year) {
+    public ClinicProfitByYearReportDTO getClinicProfitByYear (Integer year) {
         LocalDateTime startOfYear = LocalDate.of(year,1,1).atStartOfDay();
         LocalDateTime endOfYear = LocalDate.of(year + 1,1,1).atStartOfDay();
 
        return paymentRepository.findClinicProfitByYear(startOfYear,endOfYear);
     }
 
-    public List<DoctorsCanceledAppointmentsDTO> doctorsWithMostCanceledAppointments () {
+    public List<DoctorsCanceledAppointmentsReportDTO> doctorsWithMostCanceledAppointments () {
 
         return appointmentRepository.findDoctorsWithHighestCanceledAppointments(PageRequest.of(0,50));
     }

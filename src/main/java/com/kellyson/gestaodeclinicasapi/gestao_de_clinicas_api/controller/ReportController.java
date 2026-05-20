@@ -24,7 +24,7 @@ public class ReportController implements ClinicReportsControllerDoc {
 
     @Override
     @GetMapping("/top-10-doctors")
-    public ResponseEntity <List<TopDoctorsByDoneAppointmentsResponseDTO>> findTop10DoctorsByDoneAppointments (Pageable pageable) {
+    public ResponseEntity <List<TopDoctorsByDoneAppointmentsReportDTO>> findTop10DoctorsByDoneAppointments (Pageable pageable) {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(reportService.findTop10DoctorsByDoneAppointments(pageable));
@@ -32,7 +32,7 @@ public class ReportController implements ClinicReportsControllerDoc {
 
     @Override
     @GetMapping("/doctors/without-canceled-appointments")
-    public ResponseEntity <Page<DoctorsWithoutCanceledAppointmentsResponseDTO>> doctorsWithoutCanceledAppointments (
+    public ResponseEntity <Page<DoctorsWithoutCanceledAppointmentsReportDTO>> doctorsWithoutCanceledAppointments (
             @PageableDefault(size = 20)
             Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(reportService.doctorsWithoutCanceledAppointments(pageable));
@@ -41,7 +41,7 @@ public class ReportController implements ClinicReportsControllerDoc {
 
     @Override
     @GetMapping("/doctors/{doctorId}/future-30-appointments")
-    public ResponseEntity <Page<DoctorFuture30AppointmentsDTO>> doctorFutureAppointments (
+    public ResponseEntity <Page<DoctorFutureAppointmentsReportDTO>> doctorFutureAppointments (
             @PageableDefault(size = 30)
             Pageable pageable,
 
@@ -54,7 +54,7 @@ public class ReportController implements ClinicReportsControllerDoc {
 
     @Override
     @GetMapping("/pending/patients")
-    public ResponseEntity <Page<PendingPaymentPatientResponseDTO>> patientsWithPendingPayments (
+    public ResponseEntity <Page<PendingPaymentPatientsReportDTO>> patientsWithPendingPayments (
             @PageableDefault(size = 30) Pageable pageable) {
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -64,7 +64,7 @@ public class ReportController implements ClinicReportsControllerDoc {
 
     @Override
     @GetMapping("/top-5-doctors-by-revenue")
-    public ResponseEntity <List<Top5DoctorsByRevenueResponseDTO>> findTop5DoctorsByRevenue (Pageable pageable) {
+    public ResponseEntity <List<Top5DoctorsByRevenueReportDTO>> findTop5DoctorsByRevenue (Pageable pageable) {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(reportService.findTop5DoctorsByRevenue(pageable));
@@ -72,7 +72,7 @@ public class ReportController implements ClinicReportsControllerDoc {
 
     @Override
     @GetMapping("/clinic/annual-profit")
-    public ResponseEntity <ClinicProfitByYearDTO> getClinicProfitByYear (
+    public ResponseEntity <ClinicProfitByYearReportDTO> getClinicProfitByYear (
             @RequestParam Integer year) {
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -81,7 +81,7 @@ public class ReportController implements ClinicReportsControllerDoc {
 
     @Override
     @GetMapping("/doctors/canceled-appointments")
-    public ResponseEntity <List<DoctorsCanceledAppointmentsDTO>> listDoctorsWithMostCanceledAppointments () {
+    public ResponseEntity <List<DoctorsCanceledAppointmentsReportDTO>> listDoctorsWithMostCanceledAppointments () {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(reportService.doctorsWithMostCanceledAppointments());

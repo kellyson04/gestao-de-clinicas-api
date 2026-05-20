@@ -1,4 +1,4 @@
-package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request;
+package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.patient;
 
 import jakarta.validation.constraints.*;
 

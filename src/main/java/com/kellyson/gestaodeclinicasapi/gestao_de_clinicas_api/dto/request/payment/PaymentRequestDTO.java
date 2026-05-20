@@ -1,4 +1,4 @@
-package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request;
+package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.payment;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
