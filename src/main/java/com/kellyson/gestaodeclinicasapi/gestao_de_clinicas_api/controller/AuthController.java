@@ -1,5 +1,6 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.doc.AuthControllerDoc;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.LoginRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.RegisterRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.LoginResponseDTO;
@@ -9,29 +10,32 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/clinica/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthControllerDoc {
 
     private final AuthService authService;
 
+    @Override
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDTO> register (@RequestBody @Valid RegisterRequestDTO registerRequestDTO) {
+    public ResponseEntity<RegisterResponseDTO> register(
+            @RequestBody @Valid RegisterRequestDTO registerRequestDTO) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(registerRequestDTO));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(authService.register(registerRequestDTO));
     }
 
 
+    @Override
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login (@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
+    public ResponseEntity<LoginResponseDTO> login(
+            @RequestBody @Valid LoginRequestDTO loginRequestDTO) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(authService.login(loginRequestDTO));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(authService.login(loginRequestDTO));
     }
 
 }
