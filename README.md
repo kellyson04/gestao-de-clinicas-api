@@ -2,25 +2,39 @@
 
 API REST para gerenciamento de clínicas médicas, desenvolvida com Java e Spring Boot.
 
-O projeto tem como objetivo praticar backend com foco em modelagem de entidades, relacionamentos com JPA, regras de negócio, validações, paginação, tratamento de exceções e documentação com Swagger/OpenAPI.
+O projeto tem como objetivo praticar backend com foco em modelagem de entidades, relacionamentos com JPA, autenticação com JWT, autorização por perfis de usuário, regras de negócio, validações, paginação, filtros dinâmicos, relatórios, tratamento de exceções e documentação com Swagger/OpenAPI.
 
 ## Status do projeto
 
-🚧 Em desenvolvimento
+Em desenvolvimento
 
 ## Funcionalidades
 
-- Cadastro e listagem de pacientes
+- Cadastro e autenticação de usuários
+- Login com geração de token JWT
+- Controle de acesso por perfil de usuário
+- Cadastro de pacientes
+- Listagem paginada de pacientes
+- Filtros com Specification de pacientes por nome, cidade, estado e data de nascimento
 - Busca de paciente por CPF
 - Desativação de pacientes com soft delete
 - Cadastro de médicos
-- Listagem de médicos por especialidade
+- Listagem paginada de médicos
+- Filtros dinâmicos de médicos por nome, UF do CRM e especialidade
 - Desativação de médicos com soft delete
-- Agendamento e cancelamento de consultas
+- Agendamento de consultas
+- Cancelamento de consultas
+- Finalização de consultas
 - Listagem de consultas por período
-- Listagem de consultas por paciente ou médico
-- Registro, confirmação e nova tentativa de pagamento
-- Listagem de pacientes com pagamentos pendentes
+- Listagem de consultas agendadas por paciente
+- Histórico de consultas por paciente
+- Listagem de consultas agendadas por médico
+- Histórico de consultas por médico
+- Registro de pagamentos
+- Confirmação de pagamentos
+- Cancelamento de pagamentos
+- Nova tentativa de pagamento cancelado
+- Relatórios operacionais e financeiros da clínica
 - Paginação nas listagens
 - Tratamento global de exceções
 - Documentação da API com Swagger/OpenAPI
@@ -29,6 +43,8 @@ O projeto tem como objetivo praticar backend com foco em modelagem de entidades,
 
 - Java 21
 - Spring Boot
+- Spring MVC
+- Spring Security
 - Spring Data JPA
 - Hibernate
 - PostgreSQL
@@ -36,100 +52,37 @@ O projeto tem como objetivo praticar backend com foco em modelagem de entidades,
 - Bean Validation
 - Lombok
 - Maven
+- JWT
 - Swagger/OpenAPI
 
 ## Principais conceitos aplicados
 
 - Arquitetura em camadas
+- Controllers, Services, Repositories e Mappers
 - DTOs para entrada e saída de dados
-- Mappers para conversão entre entidade e DTO
 - Validação com `@Valid`
+- Autenticação stateless com JWT
+- Autorização baseada em roles
 - Relacionamentos JPA
 - Paginação com `Pageable`
+- Filtros dinâmicos com Specification
 - Transações com `@Transactional`
 - Soft delete
 - Tratamento centralizado de exceções
 - Queries com Spring Data JPA e JPQL
+- Projeções com DTOs para relatórios
+- Versionamento de banco com Flyway
 
-## Entidades principais
 
-### Patient
+## Documentação da API
 
-- id
-- name
-- cpf
-- birthDate
-- isActive
+<img width="760" height="902" alt="image" src="https://github.com/user-attachments/assets/cd641033-4dc9-475c-9f78-cad0316b9b09" />
 
-### Doctor
+- A documentação interativa está disponível via Swagger/OpenAPI.
 
-- id
-- name
-- specialty
-- isActive
+**Após iniciar o projeto, acesse:**
 
-### Appointment
+```text
+http://localhost:8081/swagger-ui/index.html 
+```
 
-- id
-- patient
-- doctor
-- dateTime
-- status
-
-### Payment
-
-- id
-- appointment
-- amount
-- status
-
-## Relacionamentos
-
-- Um paciente pode ter várias consultas
-- Um médico pode ter várias consultas
-- Uma consulta pode ter pagamento associado
-- Um pagamento pertence a uma consulta
-
-## Regras de negócio
-
-- Pacientes são identificados por CPF único
-- Pacientes e médicos podem ser desativados sem remoção física do banco
-- Não é possível agendar consulta para paciente ou médico desativado
-- Consultas são criadas com status `SCHEDULED`
-- Consultas canceladas recebem status `CANCELED`
-- Não é possível cancelar consulta já cancelada ou já realizada
-- Não é possível registrar pagamento para consulta cancelada ou já realizada
-- Não é possível registrar novo pagamento se já existir pagamento `PENDING` ou `PAID` para a consulta
-- Pagamentos podem ter status `PENDING`, `PAID` ou `CANCELED`
-
-## Como executar
-
-### Pré-requisitos
-
-- Java 21+
-- PostgreSQL
-- Maven ou Maven Wrapper
-
-### Variáveis de ambiente
-
-| Variável | Descrição | Exemplo |
-|---|---|---|
-| `DB_URL` | URL de conexão com PostgreSQL | `jdbc:postgresql://localhost:5432/gestao_clinicas` |
-| `DB_USERNAME` | Usuário do banco | `postgres` |
-| `DB_PASSWORD` | Senha do banco | `postgres` |
-
-### Passos
-
-```bash
-git clone https://github.com/kellyson04/gestao-de-clinicas-api.git
-cd gestao-de-clinicas-api
-./mvnw spring-boot:run
-
-No Windows:
-mvnw.cmd spring-boot:run
-
-A API ficará disponível em:
-http://localhost:8081
-
-A documentação Swagger ficará disponível em:
-http://localhost:8081/swagger-ui/index.html
