@@ -48,6 +48,7 @@ public class AuthService {
         return new RegisterResponseDTO(newUser.getEmail(), LocalDateTime.now());
     }
 
+
     public LoginResponseDTO login (LoginRequestDTO loginRequestDTO) {
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequestDTO.email(),loginRequestDTO.password());
