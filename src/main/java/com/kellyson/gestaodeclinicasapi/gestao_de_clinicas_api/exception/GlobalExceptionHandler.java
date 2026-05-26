@@ -1,13 +1,38 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception;
 
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.BeanValidationErrorResponse;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.ErrorResponse;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.InvalidFields;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<BeanValidationErrorResponse> handleMethodArgumentNotValid (MethodArgumentNotValidException m) {
+
+        List<InvalidFields> fields = m.getFieldErrors()
+                .stream()
+                .map(error -> new InvalidFields(error.getField(), error.getDefaultMessage()))
+                .toList();
+
+        BeanValidationErrorResponse beanValidation = BeanValidationErrorResponse.builder()
+                .status(400)
+                .error("BAD_REQUEST")
+                .fields(fields)
+                .timestamp(LocalDateTime.now())
+                .build();
+
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(beanValidation);
+    }
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse> handleBadRequest (BadRequestException b) {
