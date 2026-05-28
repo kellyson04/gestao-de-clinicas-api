@@ -1,6 +1,5 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.config.security;
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.config.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

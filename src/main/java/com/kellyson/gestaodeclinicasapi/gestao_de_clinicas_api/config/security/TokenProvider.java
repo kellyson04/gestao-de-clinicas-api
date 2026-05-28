@@ -1,6 +1,5 @@
-package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.config;
+package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.config.security;
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.ConflictException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Date;
 
 @Component
