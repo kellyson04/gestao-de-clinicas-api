@@ -36,5 +36,11 @@ public class Doctor {
     private LocalDateTime createdAt;
 
     @Column(name = "is_active",nullable = false)
-    private boolean isActive = true;
+    private boolean isActive;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.isActive = true;
+    }
 }

@@ -1,5 +1,6 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.config;
 
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.config.security.TokenProvider;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
