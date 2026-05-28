@@ -1,12 +1,13 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service;
 
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.config.TokenProvider;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.config.security.TokenProvider;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.LoginRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.RegisterRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.LoginResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.RegisterResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.User;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.UserRole;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.BadRequestException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.ConflictException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +61,7 @@ public class AuthService {
             return new LoginResponseDTO(token);
 
         }catch (BadCredentialsException e) {
-            throw new RuntimeException("Credenciais invalidas");
+            throw new BadRequestException("Credenciais invalidas");
         }
 
     }
