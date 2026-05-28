@@ -5,8 +5,6 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.doct
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
 import lombok.experimental.UtilityClass;
 
-import java.time.LocalDateTime;
-
 @UtilityClass
 public class DoctorMapper {
 
@@ -16,8 +14,6 @@ public class DoctorMapper {
                 .specialty(doctorRequestDTO.specialty())
                 .crmNumber(doctorRequestDTO.crmNumber())
                 .crmUf(doctorRequestDTO.crmUf())
-                .createdAt(LocalDateTime.now())
-                .isActive(true)
                 .build();
 
         return doctorEntity;
