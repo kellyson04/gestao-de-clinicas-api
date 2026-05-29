@@ -5,7 +5,6 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.RegisterDoctorRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.RegisterPatientRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.LoginResponseDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.RegisterPatientResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.RegisterResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Patient;
@@ -41,7 +40,7 @@ public class AuthService {
     private final TokenProvider tokenProvider;
 
     @Transactional
-    public RegisterPatientResponseDTO registerPatient (RegisterPatientRequestDTO registerPatientRequestDTO) {
+    public RegisterResponseDTO registerPatient (RegisterPatientRequestDTO registerPatientRequestDTO) {
 
         if (userRepository.existsByEmail(registerPatientRequestDTO.email())) {
             throw new ConflictException("o Email ja esta em uso");
@@ -64,7 +63,7 @@ public class AuthService {
 
         userRepository.save(newUser);
 
-        return new RegisterPatientResponseDTO(newUser.getEmail(), LocalDateTime.now());
+        return new RegisterResponseDTO(newUser.getEmail(), LocalDateTime.now());
     }
 
     @Transactional
@@ -93,7 +92,6 @@ public class AuthService {
 
         return new RegisterResponseDTO(newUser.getEmail(), LocalDateTime.now());
     }
-
 
     @Transactional(readOnly = true)
     public LoginResponseDTO login (LoginRequestDTO loginRequestDTO) {
