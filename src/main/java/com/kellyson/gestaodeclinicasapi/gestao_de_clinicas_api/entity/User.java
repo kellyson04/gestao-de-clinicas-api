@@ -26,6 +26,14 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
+
+    @OneToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
+
     @Column( nullable = false)
     private String name;
 

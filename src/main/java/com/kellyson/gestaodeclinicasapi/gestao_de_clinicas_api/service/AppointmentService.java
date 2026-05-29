@@ -143,6 +143,7 @@ public class AppointmentService {
         return AppointmentMapper.mapToResponse(appointment);
     }
 
+    @Transactional(readOnly = true)
     public Page<TodayAppointmentsReportDTO> todayAppointments (Pageable pageable) {
         LocalDate today = LocalDate.now();
 

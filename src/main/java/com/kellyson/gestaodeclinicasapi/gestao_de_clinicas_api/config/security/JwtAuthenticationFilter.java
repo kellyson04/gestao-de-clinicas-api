@@ -1,4 +1,4 @@
-package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.config;
+package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.config.security;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;

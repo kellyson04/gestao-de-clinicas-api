@@ -1,4 +1,4 @@
-package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.config;
+package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.config.security;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
