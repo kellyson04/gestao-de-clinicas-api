@@ -2,8 +2,10 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.doc.AuthControllerDoc;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.LoginRequestDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.RegisterRequestDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.RegisterDoctorRequestDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.RegisterPatientRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.LoginResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.RegisterPatientResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.RegisterResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.AuthService;
 import jakarta.validation.Valid;
@@ -20,12 +22,22 @@ public class AuthController implements AuthControllerDoc {
     private final AuthService authService;
 
     @Override
-    @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDTO> register(
-            @RequestBody @Valid RegisterRequestDTO registerRequestDTO) {
+    @PostMapping("/register/patient")
+    public ResponseEntity<RegisterPatientResponseDTO> registerPatient(
+            @RequestBody @Valid RegisterPatientRequestDTO registerPatientRequestDTO) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(authService.register(registerRequestDTO));
+                .body(authService.registerPatient(registerPatientRequestDTO));
+    }
+
+
+    @Override
+    @PostMapping("/register/doctor")
+    public ResponseEntity<RegisterResponseDTO> registerDoctor(
+            @RequestBody @Valid RegisterDoctorRequestDTO registerDoctorRequestDTO) {
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(authService.registerDoctor(registerDoctorRequestDTO));
     }
 
 
