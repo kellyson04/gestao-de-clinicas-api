@@ -5,7 +5,6 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.RegisterDoctorRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.RegisterPatientRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.LoginResponseDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.RegisterPatientResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.RegisterResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.AuthService;
 import jakarta.validation.Valid;
@@ -23,7 +22,7 @@ public class AuthController implements AuthControllerDoc {
 
     @Override
     @PostMapping("/register/patient")
-    public ResponseEntity<RegisterPatientResponseDTO> registerPatient(
+    public ResponseEntity<RegisterResponseDTO> registerPatient(
             @RequestBody @Valid RegisterPatientRequestDTO registerPatientRequestDTO) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
