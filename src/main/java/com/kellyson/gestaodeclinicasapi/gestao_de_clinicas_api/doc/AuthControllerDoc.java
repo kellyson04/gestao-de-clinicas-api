@@ -5,7 +5,6 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.RegisterPatientRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.ErrorResponse;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.LoginResponseDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.RegisterPatientResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.RegisterResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -40,7 +39,7 @@ public interface AuthControllerDoc {
                     description = "Email ja cadastrado no sistema",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    ResponseEntity<RegisterPatientResponseDTO> registerPatient(
+    ResponseEntity<RegisterResponseDTO> registerPatient(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Usuário manda os dados necessários para cadastro no sistema",
                     required = true)
