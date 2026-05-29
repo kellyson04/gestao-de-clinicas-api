@@ -2,13 +2,21 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.config.security.TokenProvider;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.LoginRequestDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.RegisterRequestDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.RegisterDoctorRequestDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.RegisterPatientRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.LoginResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.RegisterPatientResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.RegisterResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Doctor;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Patient;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.User;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.enums.UserRole;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.BadRequestException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.ConflictException;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.DoctorNotFoundException;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.PatientNotFoundException;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PatientRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,23 +34,60 @@ import java.time.LocalDateTime;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final DoctorRepository doctorRepository;
+    private final PatientRepository patientRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final TokenProvider tokenProvider;
 
     @Transactional
-    public RegisterResponseDTO register (RegisterRequestDTO registerRequestDTO) {
+    public RegisterPatientResponseDTO registerPatient (RegisterPatientRequestDTO registerPatientRequestDTO) {
 
-        if (userRepository.existsByEmail(registerRequestDTO.email())) {
+        if (userRepository.existsByEmail(registerPatientRequestDTO.email())) {
             throw new ConflictException("o Email ja esta em uso");
+        }
+
+        Patient patient = patientRepository.findByCpf(registerPatientRequestDTO.cpf())
+                .orElseThrow(() -> new PatientNotFoundException("Paciente nao encontrado com o CPF informado"));
+
+        if (userRepository.existsByPatientId(patient.getId())) {
+            throw new ConflictException("Este paciente ja possui usuario cadastrado");
         }
 
         User newUser = new User();
 
-        newUser.setName(registerRequestDTO.name());
-        newUser.setEmail(registerRequestDTO.email());
-        newUser.setPassword(passwordEncoder.encode(registerRequestDTO.password()));
+        newUser.setName(patient.getName());
+        newUser.setEmail(registerPatientRequestDTO.email());
+        newUser.setPassword(passwordEncoder.encode(registerPatientRequestDTO.password()));
         newUser.setRole(UserRole.PATIENT);
+        newUser.setPatient(patient);
+
+        userRepository.save(newUser);
+
+        return new RegisterPatientResponseDTO(newUser.getEmail(), LocalDateTime.now());
+    }
+
+    @Transactional
+    public RegisterResponseDTO registerDoctor(RegisterDoctorRequestDTO registerDoctorRequestDTO) {
+
+        if (userRepository.existsByEmail(registerDoctorRequestDTO.email())) {
+            throw new ConflictException("o Email ja esta em uso");
+        }
+
+        Doctor doctor = doctorRepository.findByCrmNumber(registerDoctorRequestDTO.crmNumber())
+                .orElseThrow(() -> new DoctorNotFoundException("O CRM do Médico informado não possui vinculo com esta clinica"));
+
+        if (userRepository.existsByDoctorId(doctor.getId())) {
+            throw new ConflictException("Este medico ja possui usuario cadastrado");
+        }
+
+        User newUser = new User();
+
+        newUser.setName(doctor.getName());
+        newUser.setEmail(registerDoctorRequestDTO.email());
+        newUser.setPassword(passwordEncoder.encode(registerDoctorRequestDTO.password()));
+        newUser.setRole(UserRole.DOCTOR);
+        newUser.setDoctor(doctor);
 
         userRepository.save(newUser);
 
