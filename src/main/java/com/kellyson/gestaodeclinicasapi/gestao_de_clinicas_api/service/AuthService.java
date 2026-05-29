@@ -95,6 +95,7 @@ public class AuthService {
     }
 
 
+    @Transactional(readOnly = true)
     public LoginResponseDTO login (LoginRequestDTO loginRequestDTO) {
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequestDTO.email(),loginRequestDTO.password());

@@ -57,6 +57,7 @@ public class ReportService {
        return appointmentRepository.findDoctorFutureAppointments(pageable,doctorId);
     }
 
+    @Transactional(readOnly = true)
     public ClinicProfitByYearReportDTO getClinicProfitByYear (Integer year) {
         LocalDateTime startOfYear = LocalDate.of(year,1,1).atStartOfDay();
         LocalDateTime endOfYear = LocalDate.of(year + 1,1,1).atStartOfDay();
@@ -64,6 +65,7 @@ public class ReportService {
        return paymentRepository.findClinicProfitByYear(startOfYear,endOfYear);
     }
 
+    @Transactional(readOnly = true)
     public List<DoctorsCanceledAppointmentsReportDTO> doctorsWithMostCanceledAppointments () {
 
         return appointmentRepository.findDoctorsWithHighestCanceledAppointments(PageRequest.of(0,50));

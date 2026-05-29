@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class UserService {
     private final PatientRepository patientRepository;
     private final AppointmentRepository appointmentRepository;
 
+    @Transactional(readOnly = true)
     public UserProfileResponseDTO me(Authentication authentication) {
 
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
@@ -43,6 +45,7 @@ public class UserService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
     public Page<UserAppointmentResponseDTO> myScheduledAppointments(Authentication authentication,Pageable pageable) {
 
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
