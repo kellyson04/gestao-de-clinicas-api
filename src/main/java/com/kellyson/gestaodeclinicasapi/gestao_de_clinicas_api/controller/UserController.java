@@ -1,5 +1,6 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.doc.UserControllerDoc;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.user.UserAppointmentResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.user.UserProfileResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.UserService;
@@ -13,21 +14,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/clinica/users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserController implements UserControllerDoc {
 
     private final UserService userService;
 
+    @Override
     @GetMapping("/me")
     public ResponseEntity<UserProfileResponseDTO> getMe (Authentication authentication) {
 
         return ResponseEntity.status(HttpStatus.OK).body(userService.me(authentication));
     }
 
+    @Override
     @GetMapping("/me/my-scheduled-appointments")
     public ResponseEntity<Page<UserAppointmentResponseDTO>> getMyScheduledAppointments(Authentication authentication, Pageable pageable) {
 
