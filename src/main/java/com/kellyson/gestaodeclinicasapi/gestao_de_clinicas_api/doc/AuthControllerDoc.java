@@ -1,9 +1,11 @@
 package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.doc;
 
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.LoginRequestDTO;
-import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.RegisterRequestDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.RegisterDoctorRequestDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.auth.RegisterPatientRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.ErrorResponse;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.LoginResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.RegisterPatientResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.auth.RegisterResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,13 +24,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface AuthControllerDoc {
 
     @Operation(
-            summary = "Cadastrar usuario",
+            summary = "Cadastrar usuario Paciente",
             description = "Cadastra um novo usuario no sistema com senha criptografada e perfil de acesso"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
-                    description = "Usuario cadastrado com sucesso"),
+                    description = "Paciente cadastrado com sucesso"),
             @ApiResponse(
                     responseCode = "400",
                     description = "Dados inválidos na requisição",
@@ -38,11 +40,39 @@ public interface AuthControllerDoc {
                     description = "Email ja cadastrado no sistema",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    ResponseEntity<RegisterResponseDTO> register(
+    ResponseEntity<RegisterPatientResponseDTO> registerPatient(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Usuário manda os dados necessários para cadastro no sistema",
                     required = true)
-            @Valid @RequestBody RegisterRequestDTO registerRequestDTO);
+            @Valid @RequestBody RegisterPatientRequestDTO registerPatientRequestDTO);
+
+
+    @Operation(
+            summary = "Cadastrar usuario Médico",
+            description = "Cadastra um usuario com perfil de medico usando o CRM de um medico ja existente"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Usuario medico cadastrado com sucesso"),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Dados invalidos na requisicao",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Medico nao encontrado com o CRM informado",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "Email ja cadastrado ou medico ja possui usuario criado",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    ResponseEntity<RegisterResponseDTO> registerDoctor(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Medico manda email, senha e CRM para cadastro no sistema",
+                    required = true)
+            @Valid @RequestBody RegisterDoctorRequestDTO registerDoctorRequestDTO);
 
 
     @Operation(
