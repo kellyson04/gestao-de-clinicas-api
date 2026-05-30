@@ -91,13 +91,13 @@ public class AppointmentService {
     public Page<AppointmentResponseDTO> listPatientScheduledAppointments (Long patientId,Pageable pageable) {
         Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException("Paciente não encontrado"));
 
-        Page<Appointment> appointments = appointmentRepository.findByPatientAndStatus(patient,AppointmentStatus.SCHEDULED,pageable);
+        Page<Appointment> appointments = appointmentRepository.findByPatientAndStatusAndDateTimeAfter(patient,AppointmentStatus.SCHEDULED,LocalDateTime.now(),pageable);
         return appointments
                 .map(appointment -> AppointmentMapper.mapToResponse(appointment));
     }
 
     @Transactional(readOnly = true)
-    public Page<AppointmentResponseDTO> listPatientAppointmentsHistory (Long patientId, Pageable pageable) {
+    public Page<AppointmentResponseDTO> listPatientAppointmentsHistory(Long patientId, Pageable pageable) {
         Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException("Paciente não encontrado"));
 
         return appointmentRepository.findByPatient(patient,pageable)
@@ -109,7 +109,7 @@ public class AppointmentService {
     public Page<AppointmentResponseDTO> listDoctorScheduledAppointment (Long doctorId,Pageable pageable) {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new DoctorNotFoundException("Médico não encontrado"));
 
-        Page<Appointment> appointments = appointmentRepository.findByDoctorAndStatus(doctor,AppointmentStatus.SCHEDULED,pageable);
+        Page<Appointment> appointments = appointmentRepository.findByDoctorAndStatusAndDateTimeAfter(doctor,AppointmentStatus.SCHEDULED,LocalDateTime.now(),pageable);
 
         return appointments
                 .map(appointment -> AppointmentMapper.mapToResponse(appointment));
