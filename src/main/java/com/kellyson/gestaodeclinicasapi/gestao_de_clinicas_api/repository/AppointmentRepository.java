@@ -18,7 +18,7 @@ import java.util.List;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
-    Page<Appointment> findByPatientAndStatus (Patient patient, AppointmentStatus status,Pageable pageable);
+    Page<Appointment> findByPatientAndStatusAndDateTimeAfter (Patient patient, AppointmentStatus status,LocalDateTime now,Pageable pageable);
     boolean existsByDoctorAndDateTime(Doctor doctor, LocalDateTime date);
     @Query("""
             SELECT app 
@@ -33,7 +33,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
             Pageable pageable
     );
     Page<Appointment> findByPatient(Patient patient, Pageable pageable);
-    Page<Appointment> findByDoctorAndStatus (Doctor doctor,AppointmentStatus status, Pageable pageable);
+    Page<Appointment> findByDoctorAndStatusAndDateTimeAfter (Doctor doctor,AppointmentStatus status,LocalDateTime now, Pageable pageable);
     Page<Appointment> findByDoctor(Doctor doctor, Pageable pageable);
     @Query("""
           SELECT new com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.TopDoctorsByDoneAppointmentsReportDTO(
