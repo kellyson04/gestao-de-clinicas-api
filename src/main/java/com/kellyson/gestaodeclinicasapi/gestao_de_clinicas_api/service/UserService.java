@@ -23,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -62,7 +63,7 @@ public class UserService {
             throw new BadRequestException("O Usuario autenticado não esta vinculado a nenhum Paciente");
         }
 
-        Page<Appointment> appointment = appointmentRepository.findByPatientAndStatus(patient, AppointmentStatus.SCHEDULED,pageable);
+        Page<Appointment> appointment = appointmentRepository.findByPatientAndStatusAndDateTimeAfter(patient, AppointmentStatus.SCHEDULED,LocalDateTime.now(),pageable);
 
         return appointment
                 .map(app -> UserAppointmentResponseDTO.builder()
@@ -85,7 +86,7 @@ public class UserService {
             throw new BadRequestException("O Usuario autenticado não esta vinculado a nenhum Médico");
         }
 
-        Page<Appointment> appointment = appointmentRepository.findByDoctorAndStatus(doctor, AppointmentStatus.SCHEDULED,pageable);
+        Page<Appointment> appointment = appointmentRepository.findByDoctorAndStatusAndDateTimeAfter(doctor, AppointmentStatus.SCHEDULED, LocalDateTime.now(),pageable);
 
         return appointment
                 .map(app -> UserAppointmentResponseDTO.builder()
