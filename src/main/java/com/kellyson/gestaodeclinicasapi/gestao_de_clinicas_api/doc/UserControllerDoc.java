@@ -43,13 +43,13 @@ public interface UserControllerDoc {
 
 
     @Operation(
-            summary = "Listar consultas agendadas do usuario autenticado",
-            description = "Retorna as consultas agendadas vinculadas ao usuario logado"
+            summary = "Listar consultas agendadas do paciente autenticado",
+            description = "Retorna as consultas agendadas vinculadas ao paciente do usuario logado"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Consultas agendadas do usuario retornadas com sucesso"),
+                    description = "Consultas agendadas do paciente retornadas com sucesso"),
             @ApiResponse(
                     responseCode = "401",
                     description = "Usuario nao autenticado",
@@ -59,7 +59,30 @@ public interface UserControllerDoc {
                     description = "Usuario sem permissao para acessar o recurso",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    ResponseEntity<Page<UserAppointmentResponseDTO>> getMyScheduledAppointments(
+    ResponseEntity<Page<UserAppointmentResponseDTO>> getMyPatientScheduledAppointments(
+            @Parameter(hidden = true) Authentication authentication,
+
+            Pageable pageable);
+
+
+    @Operation(
+            summary = "Listar consultas agendadas do medico autenticado",
+            description = "Retorna as consultas agendadas vinculadas ao medico do usuario logado"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Consultas agendadas do medico retornadas com sucesso"),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Usuario nao autenticado",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Usuario sem permissao para acessar o recurso",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    ResponseEntity<Page<UserAppointmentResponseDTO>> getMyDoctorScheduledAppointments(
             @Parameter(hidden = true) Authentication authentication,
 
             Pageable pageable);
