@@ -38,6 +38,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/clinica/auth/**").permitAll()
+                        .requestMatchers("/api/clinica/users/me/patient/**").hasRole("PATIENT")
+                        .requestMatchers("/api/clinica/users/me/doctor/**").hasRole("DOCTOR")
                         .requestMatchers("/api/clinica/patients", "/api/clinica/patients/**").hasAnyRole("ADMIN", "RECEPTIONIST")
                         .requestMatchers(HttpMethod.GET, "/api/clinica/doctors").authenticated()
                         .requestMatchers("/api/clinica/doctors", "/api/clinica/doctors/**").hasAnyRole("ADMIN", "RECEPTIONIST")
