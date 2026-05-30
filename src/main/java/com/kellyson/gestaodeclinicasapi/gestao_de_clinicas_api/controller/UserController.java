@@ -29,9 +29,16 @@ public class UserController implements UserControllerDoc {
     }
 
     @Override
-    @GetMapping("/me/my-scheduled-appointments")
-    public ResponseEntity<Page<UserAppointmentResponseDTO>> getMyScheduledAppointments(Authentication authentication, Pageable pageable) {
+    @GetMapping("/me/patient/scheduled-appointments")
+    public ResponseEntity<Page<UserAppointmentResponseDTO>> getMyPatientScheduledAppointments(Authentication authentication, Pageable pageable) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(userService.myScheduledAppointments(authentication, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.myPatientScheduledAppointments(authentication, pageable));
+    }
+
+    @Override
+    @GetMapping("/me/doctor/scheduled-appointments")
+    public ResponseEntity<Page<UserAppointmentResponseDTO>> getMyDoctorScheduledAppointments(Authentication authentication, Pageable pageable) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(userService.myDoctorScheduledAppointments(authentication, pageable));
     }
 }
