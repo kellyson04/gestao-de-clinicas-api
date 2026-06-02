@@ -1,4 +1,4 @@
-package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.config;
+package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.config.viaserviceapi;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
