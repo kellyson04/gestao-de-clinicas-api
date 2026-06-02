@@ -3,25 +3,26 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.patient.PatientFiltersRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.patient.PatientRequestDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.patient.PatientResponseDTO;
+import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.viacep.ViaCepResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.entity.Patient;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.ConflictException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.PatientNotFoundException;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.PatientMapper;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PatientRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.specification.PatientSpecification;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class PatientService {
 
     private final PatientRepository patientRepository;
+    private final ViaCepService viaCepService;
 
-    public PatientService(PatientRepository patientRepository) {
-        this.patientRepository = patientRepository;
-    }
 
     @Transactional
     public PatientResponseDTO createPatient (PatientRequestDTO patientRequestDTO) {
@@ -30,7 +31,10 @@ public class PatientService {
             throw new ConflictException("Ja existe um Paciente com este CPF no sistema");
         }
 
-        Patient patient = PatientMapper.mapToEntity(patientRequestDTO);
+        ViaCepResponseDTO adress = viaCepService.getCepPayload(patientRequestDTO);
+        viaCepService.validateCep(adress);
+
+        Patient patient = PatientMapper.mapToEntity(patientRequestDTO,adress);
 
         patientRepository.save(patient);
 
