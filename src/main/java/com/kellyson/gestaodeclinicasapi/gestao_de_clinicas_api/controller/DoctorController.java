@@ -6,6 +6,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.docto
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.doctor.DoctorResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.DoctorService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,18 +16,16 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/clinica/doctors")
+@RequiredArgsConstructor
 public class DoctorController implements DoctorControllerDoc {
 
     private final DoctorService doctorService;
 
-    public DoctorController(DoctorService doctorService) {
-        this.doctorService = doctorService;
-    }
 
     @Override
     @PostMapping
-    public ResponseEntity <DoctorResponseDTO> createDoctor (
-            @Valid @RequestBody DoctorRequestDTO doctorRequestDTO) {
+    public ResponseEntity <DoctorResponseDTO> createDoctor (@Valid @RequestBody DoctorRequestDTO doctorRequestDTO) {
+
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(doctorService.createDoctor(doctorRequestDTO));

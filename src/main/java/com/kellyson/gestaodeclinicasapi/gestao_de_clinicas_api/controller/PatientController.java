@@ -6,6 +6,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.patie
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.patient.PatientResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.PatientService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,19 +16,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/clinica/patients")
+@RequiredArgsConstructor
 public class PatientController implements PatientControllerDoc {
 
     private final PatientService patientService;
 
-    public PatientController(PatientService patientService) {
-        this.patientService = patientService;
-    }
-
-
     @Override
     @PostMapping
-    public ResponseEntity <PatientResponseDTO> createPatient (
-            @Valid @RequestBody PatientRequestDTO patientRequestDTO) {
+    public ResponseEntity <PatientResponseDTO> createPatient (@Valid @RequestBody PatientRequestDTO patientRequestDTO) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(patientService.createPatient(patientRequestDTO));
