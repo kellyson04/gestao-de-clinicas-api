@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PatientService {
 
     private final PatientRepository patientRepository;
-    private final ViaCepService viaCepService
+    private final ViaCepService viaCepService;
 
 
     @Transactional
