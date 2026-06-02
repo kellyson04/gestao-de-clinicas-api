@@ -30,7 +30,7 @@ public class Patient {
     @Column(nullable = false,length = 100)
     private String city;
 
-    @Column(nullable = false,length = 2)
+    @Column(nullable = false,length = 100)
     private String state;
 
     @Column(name = "created_at", nullable = false)
