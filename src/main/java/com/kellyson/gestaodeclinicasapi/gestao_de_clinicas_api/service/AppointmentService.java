@@ -13,6 +13,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.Appointmen
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.AppointmentRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PatientRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,17 +23,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final PatientRepository patientRepository;
     private final DoctorRepository doctorRepository;
-
-    public AppointmentService(AppointmentRepository appointmentRepository, PatientRepository patientRepository, DoctorRepository doctorRepository) {
-        this.appointmentRepository = appointmentRepository;
-        this.patientRepository = patientRepository;
-        this.doctorRepository = doctorRepository;
-    }
 
     @Transactional
     public AppointmentResponseDTO scheduleAppointment (AppointmentRequestDTO appointmentRequestDTO) {

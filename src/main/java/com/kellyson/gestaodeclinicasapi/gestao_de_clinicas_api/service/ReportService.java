@@ -6,6 +6,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.DoctorN
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.AppointmentRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PaymentRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,17 +18,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ReportService {
 
     private final AppointmentRepository appointmentRepository;
     private final PaymentRepository paymentRepository;
     private final DoctorRepository doctorRepository;
-
-    public ReportService(AppointmentRepository appointmentRepository, PaymentRepository paymentRepository,DoctorRepository doctorRepository) {
-        this.appointmentRepository = appointmentRepository;
-        this.paymentRepository = paymentRepository;
-        this.doctorRepository = doctorRepository;
-    }
 
     @Transactional(readOnly = true)
     public List<TopDoctorsByDoneAppointmentsReportDTO> findTop10DoctorsByDoneAppointments (Pageable pageable) {

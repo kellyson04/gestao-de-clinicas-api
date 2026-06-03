@@ -9,18 +9,16 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.DoctorN
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.DoctorMapper;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.DoctorRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.specification.DoctorSpecification;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class DoctorService {
     private final DoctorRepository doctorRepository;
-
-    public DoctorService(DoctorRepository doctorRepository) {
-        this.doctorRepository = doctorRepository;
-    }
 
     @Transactional
     public DoctorResponseDTO createDoctor (DoctorRequestDTO doctorRequestDTO) {
