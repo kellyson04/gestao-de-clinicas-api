@@ -7,6 +7,7 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.repo
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.AppointmentService;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,13 +19,10 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/clinica/appointments")
+@RequiredArgsConstructor
 public class AppointmentController implements AppointmentControllerDoc {
 
     private final AppointmentService appointmentService;
-
-    public AppointmentController(AppointmentService appointmentService) {
-        this.appointmentService = appointmentService;
-    }
 
     @Override
     @PostMapping

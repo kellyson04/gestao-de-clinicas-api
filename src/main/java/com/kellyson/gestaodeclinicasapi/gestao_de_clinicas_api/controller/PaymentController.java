@@ -5,19 +5,17 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.request.payme
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.payment.PaymentResponseDTO;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.PaymentService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/clinica/payments")
+@RequiredArgsConstructor
 public class PaymentController implements PaymentControllerDoc {
 
     private final PaymentService paymentService;
-
-    public PaymentController(PaymentService paymentService) {
-        this.paymentService = paymentService;
-    }
 
     @Override
     @PostMapping("/register")

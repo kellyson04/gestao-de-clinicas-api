@@ -3,6 +3,7 @@ package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.controller;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.doc.ClinicReportsControllerDoc;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.dto.response.report.*;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.service.ReportService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -14,13 +15,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/clinica/reports")
+@RequiredArgsConstructor
 public class ReportController implements ClinicReportsControllerDoc {
 
     private final ReportService reportService;
-
-    public ReportController(ReportService reportService) {
-        this.reportService = reportService;
-    }
 
     @Override
     @GetMapping("/top-10-doctors")

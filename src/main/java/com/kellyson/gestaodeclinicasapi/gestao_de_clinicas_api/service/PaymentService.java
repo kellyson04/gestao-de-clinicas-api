@@ -14,19 +14,16 @@ import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.exception.Payment
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.mapper.PaymentMapper;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.AppointmentRepository;
 import com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.repository.PaymentRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final AppointmentRepository appointmentRepository;
-
-    public PaymentService(PaymentRepository paymentRepository,AppointmentRepository appointmentRepository) {
-        this.paymentRepository = paymentRepository;
-        this.appointmentRepository = appointmentRepository;
-    }
 
     @Transactional
     public PaymentResponseDTO registerPayment (PaymentRequestDTO paymentRequestDTO) {

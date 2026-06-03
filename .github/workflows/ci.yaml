@@ -1,0 +1,55 @@
+name: Clinicas API CI
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"
+      - "fix/**"
+      - "refactor/**"
+      - "hotfix/**"
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: clinicas_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/clinicas_test
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      JWT_SECRET_KEY: 1234567890123456789012345678901234567890123456789012345678901234
+
+
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v4
+
+      - name: Configurar o Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Dar permissão ao Maven Wrapper
+        run: chmod +x mvnw
+
+      - name: Rodar build e testes
+        run: ./mvnw clean verify
