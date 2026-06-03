@@ -1,4 +1,4 @@
-package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.config.viaserviceapi;
+package com.kellyson.gestaodeclinicasapi.gestao_de_clinicas_api.config.viacep;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +8,7 @@ import org.springframework.web.client.RestClient;
 import java.time.Duration;
 
 @Configuration
-public class ViaServiceConfig {
+public class ViaCepConfig {
 
     @Bean
     public RestClient restClient() {
