@@ -15,10 +15,10 @@ import java.util.Date;
 @Component
 public class TokenProvider {
 
-    @Value("${JWT_SECRET_KEY}")
+    @Value("${spring.jwt.secret}")
     private String key;
 
-    @Value("${EXPIRATION_JWT:3600000}")
+    @Value("${spring.jwt.expiration}")
     private Long expirationTime;
 
 
