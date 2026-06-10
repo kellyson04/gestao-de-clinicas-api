@@ -45,7 +45,7 @@ public class AuthController implements AuthControllerDoc {
     public ResponseEntity<LoginResponseDTO> login(
             @RequestBody @Valid LoginRequestDTO loginRequestDTO) {
 
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(authService.login(loginRequestDTO));
     }
 
